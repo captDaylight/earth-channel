@@ -8,28 +8,28 @@ angular.module('champagneRocksApp', [
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
-      // .when('/', {
-      //   templateUrl: 'partials/main',
-      //   controller: 'MainCtrl'
-      // })
+      .when('/', {
+        templateUrl: 'partials/main',
+        controller: 'MainCtrl'
+      })
       .when('/interactive',{
         templateUrl: 'partials/interactive',
         controller: 'InteractiveCtrl'
       })
-      .when('/record',{
-        templateUrl: 'partials/record',
-        controller: 'MainCtrl'
-      })
       .when('/cover',{
         templateUrl: 'partials/cover',
-        controller: 'MainCtrl'
+        controller: 'CoverCtrl'
       })
       .when('/travel',{
         templateUrl: 'partials/travel',
-        controller: 'MainCtrl'
+        controller: 'TravelCtrl'
+      })
+      .when('/record', {
+        templateUrl: 'partials/record',
+        controller: 'RecordCtrl'
       })
       .otherwise({
-        redirectTo: '/record'
+        redirectTo: '/'
       });
       
     $locationProvider.html5Mode(true);
