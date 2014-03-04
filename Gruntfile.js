@@ -342,6 +342,12 @@ module.exports = function (grunt) {
           ]
         }, {
           expand: true,
+          dot:true,
+          cwd: '<%= yeoman.app %>/objects',
+          src: '**/*.js',
+          dest: '<%= yeoman.dist %>/public/objects'
+        },{
+          expand: true,
           dot: true,
           cwd: '<%= yeoman.app %>/views',
           dest: '<%= yeoman.dist %>/views',

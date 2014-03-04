@@ -2,6 +2,7 @@
 
 angular.module('champagneRocksApp')
   .controller('TravelCtrl', function ($scope, $http) {
+console.log('travel controller');	
 	var camera, scene, renderer;
 	var geometry, material, mesh, group;
 

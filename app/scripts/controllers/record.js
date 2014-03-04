@@ -2,7 +2,7 @@
 
 angular.module('champagneRocksApp')
   .controller('RecordCtrl', function ($scope, $http) {
-
+console.log('record controller');
 		var container;
 
 		var camera, scene, renderer;
@@ -38,11 +38,7 @@ angular.module('champagneRocksApp')
 		    sceneCube = new THREE.Scene();
 
 
-		    // lights
-		    console.log(THREE);
-		    console.log('--');
-		    console.log(THREE.HemisphereLight);
-		    console.log('--');
+
 
 		    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
 		    console.log(hemiLight);
@@ -57,15 +53,17 @@ angular.module('champagneRocksApp')
 
 		    var geometry = new THREE.SphereGeometry( 800, 4, 4 );
 
-		    var path = 'imgages/skyboxes/';
+		    var path = 'images/skyboxes/';
 		    var format = '.jpg';
 		    var urls = [
 		        path + 'px' + format, path + 'nx' + format,
 		        path + 'py' + format, path + 'ny' + format,
 		        path + 'pz' + format, path + 'nz' + format
 		    ];
-
+		    
 		    var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping() );
+		    console.log(textureCube);
+
 		    // var mirrorSphereCamera = new THREE.CubeCamera( 0.1, 5000, 512 );
 		    var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
 		    // var material = new THREE.MeshBasicMaterial( { envMap: mirrorSphereCamera.renderTarget } );
@@ -85,12 +83,10 @@ angular.module('champagneRocksApp')
 		        spheres.push( mesh );
 
 		    }
-
 		    // Skybox
 
 		    var shader = THREE.ShaderLib.cube;
 		    shader.uniforms.tCube.value = textureCube;
-
 		    var material = new THREE.ShaderMaterial( {
 
 		        fragmentShader: shader.fragmentShader,
@@ -99,36 +95,30 @@ angular.module('champagneRocksApp')
 		        depthWrite: false,
 		        side: THREE.BackSide
 
-		    } ),
-
+		    } )
 		    mesh = new THREE.Mesh( new THREE.BoxGeometry( 100, 100, 100 ), material );
 		    sceneCube.add( mesh );
-
 		//     //
 
 		    renderer = new THREE.WebGLRenderer();
 		    renderer.setSize( window.innerWidth, window.innerHeight );
 		    renderer.autoClear = false;
 		    container.appendChild( renderer.domElement );
-
 		//     //
 
-		    window.addEventListener( 'resize', onWindowResize, false );
+		    
 
 
-
-		    //LOAD THE OBJECT TO THE SCENE
+		    // //LOAD THE OBJECT TO THE SCENE
 		    var loader = new THREE.JSONLoader(); // init the loader util
 
 		    // init loading
-		    loader.load('obj/phone.js', function (geometry) {
+		    loader.load('objects/phone.js', function (geometry) {
 		        // create a new material
 
 		        // this is the same as the other objects
 		        // var material = new THREE.MeshBasicMaterial( { color: 0x666666, envMap: textureCube, refractionRatio: 0.99 } );
 		        var material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
-
-
 
 		        // create a mesh with models geometry and material
 		        var mesh = new THREE.Mesh(
@@ -144,20 +134,6 @@ angular.module('champagneRocksApp')
 
 		}
 
-		function onWindowResize() {
-
-		    windowHalfX = window.innerWidth / 2,
-		    windowHalfY = window.innerHeight / 2,
-
-		    camera.aspect = window.innerWidth / window.innerHeight;
-		    camera.updateProjectionMatrix();
-
-		    cameraCube.aspect = window.innerWidth / window.innerHeight;
-		    cameraCube.updateProjectionMatrix();
-
-		    renderer.setSize( window.innerWidth, window.innerHeight );
-
-		}
 
 		function onDocumentMouseMove(event) {
 
@@ -177,24 +153,11 @@ angular.module('champagneRocksApp')
 		}
 
 		function render() {
-
 		    var timer = 0.001 * Date.now();
 
-
-
-		    // for ( var i = 0, il = spheres.length; i < il; i ++ ) {
-
-		    //     var sphere = spheres[ i ];
-
-		    //     sphere.position.x = 1000 * Math.cos( timer + i );
-		    //     sphere.position.y = 1000 * Math.sin( timer + i );
-		    //     sphere.position.z = 5000 * Math.sin( timer + i );
-
-		    // }
-
-		    phone.position.y = 1000 * Math.cos(timer);
-		    phone.rotation.y += .01;
-		    phone.rotation.x += .01;
+		    // phone.position.y = 1000 * Math.cos(timer);
+		    // phone.rotation.y += .01;
+		    // phone.rotation.x += .01;
 
 		    camera.position.x += ( mouseX - camera.position.x ) * .05;
 		    camera.position.y += ( - mouseY - camera.position.y ) * .05;
