@@ -1,0 +1,47 @@
+$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+
+@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import 'style';
+
+body, html {
+  height: 100%;
+}
+
+#home{
+    background-color: black;
+    color: white;
+    height:100vh;
+    .container{
+        section{
+            text-align: center;
+            margin: 100px 0px;
+            &.branding{
+                
+            }
+            &.menu{
+                ul{
+                    list-style-type: none;
+                    list-style: none;
+                    margin: 0px;
+                    padding:0px;
+                    li{
+                        display: inline-block;
+                        width: 32%;
+                        &#record{
+
+                        }
+                        &#travel{
+                            
+                        }
+                        &#money{
+                            
+                        }
+                    }
+                }
+            }
+            &.about{
+
+            }
+        }
+    }
+}
