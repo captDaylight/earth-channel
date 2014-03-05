@@ -21,6 +21,7 @@ angular.module('champagneRocksApp')
 		document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
+		// the first one will be the default, the rest for each object
 		var skyboxDirectories = [
 			'Cube',
 			'GeoCave',
@@ -33,10 +34,10 @@ angular.module('champagneRocksApp')
 		var currentBackground = 0;
 
 		var soundsObjs = [
-			{'sound': new buzz.sound( '/sounds/02_cocktails.mp3')},
-			{'sound': new buzz.sound( '/sounds/03_gone.mp3')},
-			{'sound': new buzz.sound( '/sounds/05_envision.mp3')},
-			{'sound': new buzz.sound( '/sounds/06_divine_ecstasy.mp3')}
+			new buzz.sound( '/sounds/02_cocktails.mp3'),
+			new buzz.sound( '/sounds/03_gone.mp3'),
+			new buzz.sound( '/sounds/05_envision.mp3'),
+			new buzz.sound( '/sounds/06_divine_ecstasy.mp3')
 		];
 
 		// kickstart the application
@@ -55,19 +56,18 @@ angular.module('champagneRocksApp')
 		}
 
 
-		function createMusicOrb(geometry, material, sound, texture){
+		function createMusicOrb(geometry, material, sound, texture, x, y, z){
 			var mesh = new THREE.Mesh( geometry, material );
 
-			mesh.position.x = Math.random() * 8000 - 5000;
-			mesh.position.y = Math.random() * 8000 - 5000;
-			mesh.position.z = Math.random() * 12000 - 5000;
+			mesh.position.x = x;
+			mesh.position.y = y;
+			mesh.position.z = z;
 
 			mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 1 + 1;
 			mesh.active = false;
 			mesh.stableScale = mesh.scale.x;
 			mesh.sound = sound;
 			mesh.soundTexture = texture;
-
 
 			scene.add( mesh );
 			spheres.push( mesh );
@@ -119,7 +119,7 @@ angular.module('champagneRocksApp')
 		    // CREATE THE SKYBOX MATERIAL AND CUBE
 		    ////////////////////
 
-		    var geometry = new THREE.SphereGeometry( 800, 3, 3 );
+		    var geometry = new THREE.SphereGeometry( 800, 4, 4 );
 		    var material = skyMaterials[currentBackground]['material'];
 		    
 		    ////////////////////
@@ -130,10 +130,12 @@ angular.module('champagneRocksApp')
 		    // CREATE MUSIC ORBS
 		    ////////////////////
 		    
-			createMusicOrb(geometry, material, soundsObjs[0]['sound'], skyMaterials[0]);
-			createMusicOrb(geometry, material, soundsObjs[1]['sound'], skyMaterials[1]);
-			createMusicOrb(geometry, material, soundsObjs[2]['sound'], skyMaterials[2]);
-			createMusicOrb(geometry, material, soundsObjs[3]['sound'], skyMaterials[3]);
+			createMusicOrb(geometry, material, soundsObjs[0], skyMaterials[1], 1000, 1000, 1000);
+			createMusicOrb(geometry, material, soundsObjs[1], skyMaterials[2], 2000, 5000, 5000);
+			createMusicOrb(geometry, material, soundsObjs[2], skyMaterials[3], -2000, -2000, -2000);
+			createMusicOrb(geometry, material, soundsObjs[3], skyMaterials[4], 5000, 5000, 6000);
+			createMusicOrb(geometry, material, soundsObjs[3], skyMaterials[4], 7000, 5000, 7000);
+			createMusicOrb(geometry, material, soundsObjs[3], skyMaterials[4], 5000, 8000, 5000);
 
 		    ////////////////////
 
@@ -193,7 +195,7 @@ angular.module('champagneRocksApp')
 		        );
 		        phone = mesh;
 		        console.log(mesh);
-		        phone.scale.x = phone.scale.y = phone.scale.z = Math.random() * 10 + 1;
+		        phone.scale.x = phone.scale.y = phone.scale.z = 5;
 
 		        scene.add(phone);
 		    });
