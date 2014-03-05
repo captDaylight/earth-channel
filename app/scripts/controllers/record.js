@@ -9,6 +9,7 @@ angular.module('champagneRocksApp')
 
 		var mesh, lightMesh, geometry, phone;
 		var spheres = [];
+		    var loader = new THREE.JSONLoader(); // init the loader util
 
 
 		var directionalLight, pointLight;
@@ -29,6 +30,17 @@ angular.module('champagneRocksApp')
 			'Sander',
 			'night_sky'
 		];
+		var sphereObjects = [
+			'Rec_S01_0304_01.js',
+			'Rec_S02_0304_01.js',
+			'Rec_S03_0304_01.js',
+			'Rec_S04_0304_01.js',
+			'Rec_S05_0304_01.js',
+			'Rec_S06_0304_01.js',
+			'Rec_S07_0304_01.js',
+			'Rec_S08_0304_01.js',
+			'Rec_S09_0304_01.js'
+		]
 
 		var skyMaterials = [];
 		var currentBackground = 0;
@@ -56,21 +68,34 @@ angular.module('champagneRocksApp')
 		}
 
 
-		function createMusicOrb(geometry, material, sound, texture, x, y, z){
-			var mesh = new THREE.Mesh( geometry, material );
+		function createMusicOrb(geometry, material, object, sound, texture, x, y, z){
 
-			mesh.position.x = x;
-			mesh.position.y = y;
-			mesh.position.z = z;
 
-			mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 1 + 1;
-			mesh.active = false;
-			mesh.stableScale = mesh.scale.x;
-			mesh.sound = sound;
-			mesh.soundTexture = texture;
+		    loader.load('objects/' + object, function (geometry) {
+		        // create a new material
+		        // var material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
 
-			scene.add( mesh );
-			spheres.push( mesh );
+		        // create a mesh with models geometry and material
+		        var mesh = new THREE.Mesh(
+		            geometry,
+		            material
+		        );
+
+		        mesh.scale.x = mesh.scale.y = mesh.scale.z = 5;
+
+				mesh.position.x = x;
+				mesh.position.y = y;
+				mesh.position.z = z;
+
+				mesh.active = false;
+				mesh.stableScale = mesh.scale.x;
+				mesh.sound = sound;
+				mesh.soundTexture = texture;
+				scene.add( mesh );
+				spheres.push( mesh );
+		    });
+
+
 		}
 
 
@@ -102,6 +127,7 @@ angular.module('champagneRocksApp')
 		    ////////////////////
 
 
+
 		    // START UP ALL OF THE SKY MATERIALS
 		    ////////////////////
 
@@ -126,16 +152,15 @@ angular.module('champagneRocksApp')
 
 
 
-
 		    // CREATE MUSIC ORBS
 		    ////////////////////
 		    
-			createMusicOrb(geometry, material, soundsObjs[0], skyMaterials[1], 1000, 1000, 1000);
-			createMusicOrb(geometry, material, soundsObjs[1], skyMaterials[2], 2000, 5000, 5000);
-			createMusicOrb(geometry, material, soundsObjs[2], skyMaterials[3], -2000, -2000, -2000);
-			createMusicOrb(geometry, material, soundsObjs[3], skyMaterials[4], 5000, 5000, 6000);
-			createMusicOrb(geometry, material, soundsObjs[3], skyMaterials[4], 7000, 5000, 7000);
-			createMusicOrb(geometry, material, soundsObjs[3], skyMaterials[4], 5000, 8000, 5000);
+			createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], 1000, 1000, 1000);
+			createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], 2000, 5000, 5000);
+			createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -2000, -2000, -2000);
+			createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 5000, 5000, 6000);
+			createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[3], skyMaterials[4], 7000, 5000, 7000);
+			createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[3], skyMaterials[4], 5000, 8000, 5000);
 
 		    ////////////////////
 
@@ -162,6 +187,7 @@ angular.module('champagneRocksApp')
 			////////////////////
 
 
+
 			// CREATE RENDERER
 			////////////////////
 
@@ -172,7 +198,6 @@ angular.module('champagneRocksApp')
 			
 			////////////////////
 
-		    
 
 
 		    // LOAD THE CENTRAL OBJECT TO THE SCENE
@@ -181,7 +206,7 @@ angular.module('champagneRocksApp')
 		    var loader = new THREE.JSONLoader(); // init the loader util
 
 		    // init loading
-		    loader.load('objects/Used/Phones.js', function (geometry) {
+		    loader.load('objects/Rec_CO_0304_03.js', function (geometry) {
 		        // create a new material
 
 		        // this is the same as the other objects
@@ -194,7 +219,6 @@ angular.module('champagneRocksApp')
 		            material
 		        );
 		        phone = mesh;
-		        console.log(mesh);
 		        phone.scale.x = phone.scale.y = phone.scale.z = 5;
 
 		        scene.add(phone);
@@ -223,7 +247,7 @@ angular.module('champagneRocksApp')
 		}
 
 
-		var orbFluxAmount = 4;
+		var orbFluxAmount = 1;
 		function render() {
 		    var timer = 0.001 * Date.now();
 
@@ -270,23 +294,22 @@ angular.module('champagneRocksApp')
 				// intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
 				var obj = intersects[ 0 ].object
 			    
+			    var musicSwitch = false;
 			    // turn the other orbs off
 			    for(var i = 0; i < spheres.length; i++){
 			    	if(spheres[i].active){
+			    		if(spheres[i].uuid === obj.uuid){
+			    			musicSwitch = true;
+			    		}
 			    		spheres[i].sound.stop();
-			    		spheres[i].active = false;	
+			    		spheres[i].active = false;
 			    	}
 			    }
+			    if(!musicSwitch){
+					obj.sound.play();
+					obj.active = true;
+			    }
 
-			    obj.sound.play();
-				obj.active = true;
-
-				// scene.remove(intersects[ 0 ].object);
-
-				// var particle = new THREE.Sprite( particleMaterial );
-				// particle.position = intersects[ 0 ].point;
-				// particle.scale.x = particle.scale.y = 16;
-				// scene.add( aparticle );
 
 				currentBackground++;
 				if(currentBackground == skyboxDirectories.length){
@@ -294,11 +317,6 @@ angular.module('champagneRocksApp')
 				}
 
 				var material = obj.soundTexture['material'];
-				console.log('---');
-				console.log(skyMaterials[currentBackground]);
-				console.log(obj.soundTexture);
-				// var material = obj.soundTexture;
-
 
 				for(var i = 0; i < spheres.length; i++){
 					spheres[i].material = material;
