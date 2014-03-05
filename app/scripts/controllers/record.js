@@ -2,10 +2,9 @@
 
 angular.module('champagneRocksApp')
   .controller('RecordCtrl', function ($scope, $http) {
-console.log('record controller');
 		var container;
 
-		var camera, scene, renderer;
+		var camera, projector, scene, renderer;
 		var cameraCube, sceneCube;
 
 		var mesh, lightMesh, geometry, phone;
@@ -20,6 +19,7 @@ console.log('record controller');
 		var windowHalfY = window.innerHeight / 2;
 
 		document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
 		init();
 		animate();
@@ -36,8 +36,7 @@ console.log('record controller');
 
 		    scene = new THREE.Scene();
 		    sceneCube = new THREE.Scene();
-
-
+		    projector = new THREE.Projector();
 
 
 		    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
@@ -46,10 +45,6 @@ console.log('record controller');
 		    hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
 		    hemiLight.position.set( 0, 500, 0 );
 		    scene.add( hemiLight );
-
-
-
-
 
 		    var geometry = new THREE.SphereGeometry( 800, 4, 4 );
 
@@ -169,4 +164,41 @@ console.log('record controller');
 		    renderer.render( scene, camera );
 
 		}
+
+
+
+
+		function onDocumentMouseDown( event ) {
+
+			event.preventDefault();
+
+			var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+			projector.unprojectVector( vector, camera );
+
+			var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+			var intersects = raycaster.intersectObjects( spheres );
+
+			if ( intersects.length > 0 ) {
+				console.log(intersects);
+				intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+				scene.remove();
+				// var particle = new THREE.Sprite( particleMaterial );
+				// particle.position = intersects[ 0 ].point;
+				// particle.scale.x = particle.scale.y = 16;
+				// scene.add( aparticle );
+
+			}
+
+			/*
+			// Parse all the faces
+			for ( var i in intersects ) {
+
+				intersects[ i ].face.material[ 0 ].color.setHex( Math.random() * 0xffffff | 0x80000000 );
+
+			}
+			*/
+		}
+
+
   });

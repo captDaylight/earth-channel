@@ -79,7 +79,7 @@ console.log('travel controller');
 	    var timer = 0.005 * Date.now();
 
 	    //removing objects from the scene, to lighten the load
-	  	if(scene.__objectsAdded.length > 120 ){
+	  	if(scene.__objectsAdded.length > 200 ){
 	  		// 3 signifies not to delete the base objects like ground plane
 	  		scene.remove(scene.__objectsAdded[3]);
 	  	}
@@ -112,8 +112,10 @@ console.log('travel controller');
 		rectShape.lineTo( rectLength, 0 );
 		rectShape.lineTo( 0, 0 );
 
+		var color = new THREE.Color( Math.cos(timer), 1, 1 )
+		
 		// addShape( rectShape, 0x005500, -150, 150, 0, 0, 0, 0, 1 );
-		addShape( rectShape, 0xffffff, mouseX, mouseY, xPos*10, 0, 0, 0, 1 );
+		addShape( rectShape, color, mouseX, mouseY, xPos*10, 0, 0, rotation, 1 );
 
 	    // // create triangle from circle generator
 	    // var segments = 20;
@@ -129,7 +131,7 @@ console.log('travel controller');
 	    // xPos += 1;
 	    // scene.add( circle );
 
-
+	    // rotation += .05;
 		xPos += 1;
 
 
