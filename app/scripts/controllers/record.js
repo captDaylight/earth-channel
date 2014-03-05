@@ -32,25 +32,16 @@ angular.module('champagneRocksApp')
 		var skyMaterials = [];
 		var currentBackground = 0;
 
+		var soundsObjs = [
+			{'sound': new buzz.sound( '/sounds/02_cocktails.mp3')},
+			{'sound': new buzz.sound( '/sounds/03_gone.mp3')},
+			{'sound': new buzz.sound( '/sounds/05_envision.mp3')},
+			{'sound': new buzz.sound( '/sounds/06_divine_ecstasy.mp3')}
+		];
+
+		// kickstart the application
 		init();
 		animate();
-
-
-
-		var mySound = new buzz.sound( '/sounds/02_cocktails.mp3');
-
-
-		
-		
-
-		if (!buzz.isMP3Supported()) {
-			console.log('mp3 is not supported');
-
-		}
-		else{
-			console.log('mp3 is supported');
-		}
-
 
 		function getSkyboxImageArray(location){
 			var path = 'images/skyboxes/' + location + '/';
@@ -61,6 +52,25 @@ angular.module('champagneRocksApp')
 		    	path + 'pz' + format, path + 'nz' + format
 			];
 			return urls;
+		}
+
+
+		function createMusicOrb(geometry, material, sound, texture){
+			var mesh = new THREE.Mesh( geometry, material );
+
+			mesh.position.x = Math.random() * 8000 - 5000;
+			mesh.position.y = Math.random() * 8000 - 5000;
+			mesh.position.z = Math.random() * 12000 - 5000;
+
+			mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 1 + 1;
+			mesh.active = false;
+			mesh.stableScale = mesh.scale.x;
+			mesh.sound = sound;
+			mesh.soundTexture = texture;
+
+
+			scene.add( mesh );
+			spheres.push( mesh );
 		}
 
 
@@ -95,7 +105,7 @@ angular.module('champagneRocksApp')
 		    // START UP ALL OF THE SKY MATERIALS
 		    ////////////////////
 
-		    for(i = 0; i < skyboxDirectories.length; i++){
+		    for(var i = 0; i < skyboxDirectories.length; i++){
 				var urls = getSkyboxImageArray(skyboxDirectories[i]);
 		    	var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping() );
 		    	var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
@@ -109,7 +119,7 @@ angular.module('champagneRocksApp')
 		    // CREATE THE SKYBOX MATERIAL AND CUBE
 		    ////////////////////
 
-		    var geometry = new THREE.SphereGeometry( 800, 4, 4 );
+		    var geometry = new THREE.SphereGeometry( 800, 3, 3 );
 		    var material = skyMaterials[currentBackground]['material'];
 		    
 		    ////////////////////
@@ -119,22 +129,11 @@ angular.module('champagneRocksApp')
 
 		    // CREATE MUSIC ORBS
 		    ////////////////////
-
-		    for ( var i = 0; i < 10; i ++ ) {
-
-		        var mesh = new THREE.Mesh( geometry, material );
-
-		        mesh.position.x = Math.random() * 8000 - 5000;
-		        mesh.position.y = Math.random() * 8000 - 5000;
-		        mesh.position.z = Math.random() * 12000 - 5000;
-
-		        mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 1 + 1;
-
-		        scene.add( mesh );
-
-		        spheres.push( mesh );
-
-		    }
+		    
+			createMusicOrb(geometry, material, soundsObjs[0]['sound'], skyMaterials[0]);
+			createMusicOrb(geometry, material, soundsObjs[1]['sound'], skyMaterials[1]);
+			createMusicOrb(geometry, material, soundsObjs[2]['sound'], skyMaterials[2]);
+			createMusicOrb(geometry, material, soundsObjs[3]['sound'], skyMaterials[3]);
 
 		    ////////////////////
 
@@ -222,7 +221,7 @@ angular.module('champagneRocksApp')
 		}
 
 
-
+		var orbFluxAmount = 4;
 		function render() {
 		    var timer = 0.001 * Date.now();
 
@@ -231,7 +230,14 @@ angular.module('champagneRocksApp')
 			    phone.rotation.y += .01;
 			    phone.rotation.x += .01;
 		    }
+		    for(var i = 0; i < spheres.length; i++){
+		    	if(spheres[i].active){
+		    		spheres[i].scale.x = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
+		    		spheres[i].scale.y = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
+		    		spheres[i].scale.z = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
+		    	}
 
+		    }
 		    camera.position.x += ( mouseX - camera.position.x ) * .05;
 		    camera.position.y += ( - mouseY - camera.position.y ) * .05;
 
@@ -259,13 +265,19 @@ angular.module('champagneRocksApp')
 
 			if ( intersects.length > 0 ) {
 				
-				mySound.play().fadeIn();
-
-
-
 				// intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
 				var obj = intersects[ 0 ].object
-				console.log(obj);
+			    
+			    // turn the other orbs off
+			    for(var i = 0; i < spheres.length; i++){
+			    	if(spheres[i].active){
+			    		spheres[i].sound.stop();
+			    		spheres[i].active = false;	
+			    	}
+			    }
+
+			    obj.sound.play();
+				obj.active = true;
 
 				// scene.remove(intersects[ 0 ].object);
 
@@ -279,8 +291,11 @@ angular.module('champagneRocksApp')
 					currentBackground = 0;
 				}
 
-				var material = skyMaterials[currentBackground]['material'];
-
+				var material = obj.soundTexture['material'];
+				console.log('---');
+				console.log(skyMaterials[currentBackground]);
+				console.log(obj.soundTexture);
+				// var material = obj.soundTexture;
 
 
 				for(var i = 0; i < spheres.length; i++){
@@ -288,7 +303,7 @@ angular.module('champagneRocksApp')
 				}
 
 			    var shader = THREE.ShaderLib.cube;
-			    shader.uniforms.tCube.value = skyMaterials[currentBackground]['textureCube'];
+			    shader.uniforms.tCube.value = obj.soundTexture['textureCube'];
 			    var material = new THREE.ShaderMaterial( {
 
 			        fragmentShader: shader.fragmentShader,
@@ -303,7 +318,7 @@ angular.module('champagneRocksApp')
 			    sceneCube.add( mesh );
 
 
-			    obj.material = skyMaterials[3]['material'];
+			    obj.material = obj.soundTexture['material'];
 			}
 		}
 
