@@ -3,7 +3,7 @@
 angular.module('champagneRocksApp')
   .controller('RecordCtrl', function ($scope, $http) {
 		var container;
-
+		buzz.defaults.preload = 'auto';
 		var camera, projector, scene, renderer;
 		var cameraCube, sceneCube;
 
@@ -36,6 +36,20 @@ angular.module('champagneRocksApp')
 		animate();
 
 
+
+		var mySound = new buzz.sound( '/sounds/02_cocktails.mp3');
+
+
+		
+		
+
+		if (!buzz.isMP3Supported()) {
+			console.log('mp3 is not supported');
+
+		}
+		else{
+			console.log('mp3 is supported');
+		}
 
 
 		function getSkyboxImageArray(location){
@@ -245,6 +259,10 @@ angular.module('champagneRocksApp')
 
 			if ( intersects.length > 0 ) {
 				
+				mySound.play().fadeIn();
+
+
+
 				// intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
 				var obj = intersects[ 0 ].object
 				console.log(obj);
