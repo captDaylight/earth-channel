@@ -113,7 +113,7 @@ console.log('record controller');
 		    var loader = new THREE.JSONLoader(); // init the loader util
 
 		    // init loading
-		    loader.load('objects/phone.js', function (geometry) {
+		    loader.load('objects/Rec_CO_0304_03.js', function (geometry) {
 		        // create a new material
 
 		        // this is the same as the other objects
