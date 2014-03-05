@@ -21,10 +21,40 @@ angular.module('champagneRocksApp')
 		document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
+		var skyboxDirectories = [
+			'Cube',
+			'GeoCave',
+			'MapProof',
+			'Sander',
+			'night_sky'
+		];
+
+		var skyMaterials = [];
+		var currentBackground = 0;
+
 		init();
 		animate();
 
+
+
+
+		function getSkyboxImageArray(location){
+			var path = 'images/skyboxes/' + location + '/';
+		    var format = '.jpg';
+		    var urls = [
+		    	path + 'px' + format, path + 'nx' + format,
+		    	path + 'py' + format, path + 'ny' + format,
+		    	path + 'pz' + format, path + 'nz' + format
+			];
+			return urls;
+		}
+
+
+
 		function init() {
+
+			// SET UP SCENE, CAMERA, LIGHTS
+			////////////////////
 
 		    container = document.createElement( 'div' );
 		    document.body.appendChild( container );
@@ -38,34 +68,47 @@ angular.module('champagneRocksApp')
 		    sceneCube = new THREE.Scene();
 		    projector = new THREE.Projector();
 
-
 		    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-		    console.log(hemiLight);
+
 		    hemiLight.color.setHSL( 0.6, 1, 0.6 );
 		    hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
 		    hemiLight.position.set( 0, 500, 0 );
 		    scene.add( hemiLight );
 
+		    ////////////////////
+
+
+		    // START UP ALL OF THE SKY MATERIALS
+		    ////////////////////
+
+		    for(i = 0; i < skyboxDirectories.length; i++){
+				var urls = getSkyboxImageArray(skyboxDirectories[i]);
+		    	var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping() );
+		    	var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
+		    	skyMaterials.push({material: material, textureCube: textureCube});
+		    }
+
+		    ////////////////////
+
+
+
+		    // CREATE THE SKYBOX MATERIAL AND CUBE
+		    ////////////////////
+
 		    var geometry = new THREE.SphereGeometry( 800, 4, 4 );
-
-		    var path = 'images/skyboxes/';
-		    var format = '.jpg';
-		    var urls = [
-		        path + 'px' + format, path + 'nx' + format,
-		        path + 'py' + format, path + 'ny' + format,
-		        path + 'pz' + format, path + 'nz' + format
-		    ];
+		    var material = skyMaterials[currentBackground]['material'];
 		    
-		    var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping() );
-		    console.log(textureCube);
+		    ////////////////////
 
-		    // var mirrorSphereCamera = new THREE.CubeCamera( 0.1, 5000, 512 );
-		    var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
-		    // var material = new THREE.MeshBasicMaterial( { envMap: mirrorSphereCamera.renderTarget } );
+
+
+
+		    // CREATE MUSIC ORBS
+		    ////////////////////
+
 		    for ( var i = 0; i < 10; i ++ ) {
 
 		        var mesh = new THREE.Mesh( geometry, material );
-
 
 		        mesh.position.x = Math.random() * 8000 - 5000;
 		        mesh.position.y = Math.random() * 8000 - 5000;
@@ -78,10 +121,16 @@ angular.module('champagneRocksApp')
 		        spheres.push( mesh );
 
 		    }
-		    // Skybox
+
+		    ////////////////////
+
+
+
+		    // ADD SKYBOX TO SCENE WITH MATERIAL
+		    ////////////////////
 
 		    var shader = THREE.ShaderLib.cube;
-		    shader.uniforms.tCube.value = textureCube;
+		    shader.uniforms.tCube.value = skyMaterials[currentBackground]['textureCube'];
 		    var material = new THREE.ShaderMaterial( {
 
 		        fragmentShader: shader.fragmentShader,
@@ -92,23 +141,32 @@ angular.module('champagneRocksApp')
 
 		    } )
 		    mesh = new THREE.Mesh( new THREE.BoxGeometry( 100, 100, 100 ), material );
+
 		    sceneCube.add( mesh );
-		//     //
+
+			////////////////////
+
+
+			// CREATE RENDERER
+			////////////////////
 
 		    renderer = new THREE.WebGLRenderer();
 		    renderer.setSize( window.innerWidth, window.innerHeight );
 		    renderer.autoClear = false;
 		    container.appendChild( renderer.domElement );
-		//     //
+			
+			////////////////////
 
 		    
 
 
-		    // //LOAD THE OBJECT TO THE SCENE
+		    // LOAD THE CENTRAL OBJECT TO THE SCENE
+		    ////////////////////
+
 		    var loader = new THREE.JSONLoader(); // init the loader util
 
 		    // init loading
-		    loader.load('objects/Rec_CO_0304_03.js', function (geometry) {
+		    loader.load('objects/Used/Phones.js', function (geometry) {
 		        // create a new material
 
 		        // this is the same as the other objects
@@ -127,6 +185,8 @@ angular.module('champagneRocksApp')
 		        scene.add(phone);
 		    });
 
+		    ////////////////////
+
 		}
 
 
@@ -137,7 +197,7 @@ angular.module('champagneRocksApp')
 
 		}
 
-		// //
+		
 
 		function animate() {
 
@@ -147,12 +207,16 @@ angular.module('champagneRocksApp')
 
 		}
 
+
+
 		function render() {
 		    var timer = 0.001 * Date.now();
 
-		    // phone.position.y = 1000 * Math.cos(timer);
-		    // phone.rotation.y += .01;
-		    // phone.rotation.x += .01;
+		    if(phone !== undefined){
+			    phone.position.y = 1000 * Math.cos(timer);
+			    phone.rotation.y += .01;
+			    phone.rotation.x += .01;
+		    }
 
 		    camera.position.x += ( mouseX - camera.position.x ) * .05;
 		    camera.position.y += ( - mouseY - camera.position.y ) * .05;
@@ -180,24 +244,49 @@ angular.module('champagneRocksApp')
 			var intersects = raycaster.intersectObjects( spheres );
 
 			if ( intersects.length > 0 ) {
-				console.log(intersects);
-				intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
-				scene.remove();
+				
+				// intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+				var obj = intersects[ 0 ].object
+				console.log(obj);
+
+				// scene.remove(intersects[ 0 ].object);
+
 				// var particle = new THREE.Sprite( particleMaterial );
 				// particle.position = intersects[ 0 ].point;
 				// particle.scale.x = particle.scale.y = 16;
 				// scene.add( aparticle );
 
+				currentBackground++;
+				if(currentBackground == skyboxDirectories.length){
+					currentBackground = 0;
+				}
+
+				var material = skyMaterials[currentBackground]['material'];
+
+
+
+				for(var i = 0; i < spheres.length; i++){
+					spheres[i].material = material;
+				}
+
+			    var shader = THREE.ShaderLib.cube;
+			    shader.uniforms.tCube.value = skyMaterials[currentBackground]['textureCube'];
+			    var material = new THREE.ShaderMaterial( {
+
+			        fragmentShader: shader.fragmentShader,
+			        vertexShader: shader.vertexShader,
+			        uniforms: shader.uniforms,
+			        depthWrite: false,
+			        side: THREE.BackSide
+
+			    } )
+			    mesh = new THREE.Mesh( new THREE.BoxGeometry( 100, 100, 100 ), material );
+
+			    sceneCube.add( mesh );
+
+
+			    obj.material = skyMaterials[3]['material'];
 			}
-
-			/*
-			// Parse all the faces
-			for ( var i in intersects ) {
-
-				intersects[ i ].face.material[ 0 ].color.setHex( Math.random() * 0xffffff | 0x80000000 );
-
-			}
-			*/
 		}
 
 

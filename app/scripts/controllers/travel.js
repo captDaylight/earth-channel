@@ -5,6 +5,7 @@ angular.module('champagneRocksApp')
 console.log('travel controller');	
 	var camera, scene, renderer;
 	var geometry, material, mesh, group;
+	var ground;
 
 	init();
 	animate();
@@ -27,11 +28,11 @@ console.log('travel controller');
 
 	    // add ground
 	    var groundMaterial = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
-		var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 20000, 20000, 50, 50 ), groundMaterial );
-		mesh.position.y = -750;
-		mesh.rotation.x = -1.5;
+		ground = new THREE.Mesh( new THREE.PlaneGeometry( 20000, 20000, 50, 50 ), groundMaterial );
+		ground.position.y = -750;
+		ground.rotation.x = -1.5;
 		// mesh.position.z = -2000;
-		scene.add( mesh );
+		scene.add( ground );
 
 	    renderer = new THREE.CanvasRenderer();
 	    renderer.setClearColor( 0x666666 );
@@ -115,7 +116,7 @@ console.log('travel controller');
 		var color = new THREE.Color( Math.cos(timer), 1, 1 )
 		
 		// addShape( rectShape, 0x005500, -150, 150, 0, 0, 0, 0, 1 );
-		addShape( rectShape, color, mouseX, mouseY, xPos*10, 0, 0, rotation, 1 );
+		addShape( rectShape, color, mouseX, mouseY, xPos*10, 0, 0, 0, 1 );
 
 	    // // create triangle from circle generator
 	    // var segments = 20;
@@ -131,9 +132,9 @@ console.log('travel controller');
 	    // xPos += 1;
 	    // scene.add( circle );
 
-	    // rotation += .05;
+	    rotation += .05;
 		xPos += 1;
-
+		// ground.rotation.y = rotation
 
 	    // note: three.js includes requestAnimationFrame shim
 	    requestAnimationFrame(animate);
