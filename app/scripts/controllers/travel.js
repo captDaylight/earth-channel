@@ -108,7 +108,7 @@ console.log('travel controller');
 		var rectShape = new THREE.Shape();
 		rectShape.moveTo( 0,0 );
 		rectShape.lineTo( 0, rectWidth );
-		rectShape.lineTo( rectLength, rectWidth );
+		rectShape.lineTo( rectLength + (Math.cos(timer) * 100), rectWidth + (Math.cos(timer) * 100) );
 		rectShape.lineTo( rectLength, 0 );
 		rectShape.lineTo( 0, 0 );
 
