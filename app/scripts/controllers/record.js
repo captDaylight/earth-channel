@@ -69,8 +69,6 @@ angular.module('champagneRocksApp')
 
 
 		function createMusicOrb(geometry, material, object, sound, texture, x, y, z){
-
-
 		    loader.load('objects/' + object, function (geometry) {
 		        // create a new material
 		        // var material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
@@ -94,8 +92,6 @@ angular.module('champagneRocksApp')
 				scene.add( mesh );
 				spheres.push( mesh );
 		    });
-
-
 		}
 
 
@@ -247,6 +243,7 @@ angular.module('champagneRocksApp')
 		}
 
 
+
 		var orbFluxAmount = 1;
 		function render() {
 		    var timer = 0.001 * Date.now();
@@ -264,6 +261,7 @@ angular.module('champagneRocksApp')
 		    	}
 
 		    }
+
 		    camera.position.x += ( mouseX - camera.position.x ) * .05;
 		    camera.position.y += ( - mouseY - camera.position.y ) * .05;
 
@@ -272,7 +270,6 @@ angular.module('champagneRocksApp')
 
 		    renderer.render( sceneCube, cameraCube );
 		    renderer.render( scene, camera );
-
 		}
 
 
