@@ -138,3 +138,68 @@ body{
         }
     }
 }
+
+
+
+
+.icon{
+    height: 50px;
+    width: 50px;
+}
+.description{
+    position:absolute;
+    top: 30px;
+    left:30px;
+    font-family: SourceSansProBold;
+
+    .branding{
+        color: white;
+        border: 5px solid white;
+        width: 300px;
+        padding: 10px; 
+        text-align: center;
+        font-size: 25px;
+        &:hover{
+            background-color: white;
+            color:black;
+        }
+    }
+    .title-block{
+        padding:10px;
+        .icon, .title{
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .title{
+            color: white;
+            font-size: 25px;
+            margin: 10px;
+        }
+    }
+    .about-block{
+        color:black;
+        border: 5px solid white;
+        width: 300px;
+        padding: 10px; 
+        background-color:white;
+    }
+}
+.navigation{
+
+    .arrows{
+
+        div{
+            height: 50px;
+            width: 50px;
+            position: absolute;
+            bottom:30px;
+
+        }
+        .previous{
+            left:30px;
+        }
+        .next{
+            right:30px;
+        }
+    }
+}

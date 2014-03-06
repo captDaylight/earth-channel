@@ -2,7 +2,15 @@
 
 angular.module('champagneRocksApp')
   .controller('TravelCtrl', function ($scope, $http) {
-console.log('travel controller');	
+
+
+  	// remove any previous canvases
+  	$('canvas').remove();
+  	$scope.about = 'Party Party party, We are trying to create a visualization of mommy blogs. In our opinion these blogs are the cultural vanguard of cultural innovation.';
+  	$scope.title = 'Party Town'
+  	$scope.previous = '/record';
+  	$scope.next = '/cover'
+
 	var camera, scene, renderer;
 	var geometry, material, mesh, group;
 	var ground;
