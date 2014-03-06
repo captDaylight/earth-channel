@@ -2,23 +2,52 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 
 @import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 @import 'style';
+@import 'bourbon/bourbon.scss';
 
-body, html {
-  height: 100%;
+@include font-face(SourceSansProBold, '/fonts/Apercu/apercu_bold-webfont');
+@include font-face(SourceSansProRegular, '/fonts/Apercu/apercu_regular-webfont');
+
+html {
+    height: 100%;
+}
+body{
+    min-height:100%;
 }
 
 #home{
     background-color: black;
     color: white;
-    height:100vh;
-    .container{
+    font-family: SourceSansProBold;
+    .top{
+        height: 760px;
+        min-height: 760px;
+        position:relative;
+        background-color: white;
+        background-repeat:no-repeat;
+        background-attachment:fixed;
+        background-position:center; 
+        margin-bottom: -60px; // for the transparent triangle
         section{
             text-align: center;
-            margin: 100px 0px;
+            // padding: 100px 0px;
             &.branding{
-                
+                color:black;
+                font-size: 75px;
+                padding: 150px 0px 50px 0px;
+                div{
+                    padding:20px 50px;
+                    border:10px solid black;
+                    width: 725px;
+                    margin:0px auto;
+                }
             }
             &.menu{
+                .select{
+                    text-align: center;
+                    color: black;
+                    font-size: 25px;
+                    margin-bottom: 50px; 
+                }
                 ul{
                     list-style-type: none;
                     list-style: none;
@@ -27,6 +56,15 @@ body, html {
                     li{
                         display: inline-block;
                         width: 32%;
+                        div{
+                            width: 200px;
+                            height: 200px;
+                            border-radius: 50%;
+                            margin: 0px auto;    
+                            background-position:center; 
+                            background-repeat:no-repeat;
+                        }
+                        
                         &#record{
 
                         }
@@ -39,9 +77,51 @@ body, html {
                     }
                 }
             }
-            &.about{
 
-            }
         }
+        .learn-more{
+            font-size: 30px;
+            color: black;
+            text-align: center;
+            position: absolute;
+            bottom: 19px;
+            width: 100%;
+        }
+
+    }
+    .middle{
+        position: relative;
+        width: 100%;
+        height: 60px;
+        margin: 0 auto;
+        
+
+
+        &:before, &:after {
+            content:'';
+            position: absolute;
+            top: 0;
+            height: 0;
+            border-bottom: 60px solid black;
+            -webkit-box-sizing: border-box;
+             -moz-box-sizing: border-box;
+              -ms-box-sizing: border-box;
+                  box-sizing: border-box;
+        }
+
+        &:before {
+            left: 0;
+            width: 50%;
+            border-right: 100px solid transparent;
+        }
+
+        &:after {
+            right:0;
+            width: 50%;
+            border-left: 100px solid transparent;
+        }
+    }
+    .bottom{
+        height: 500px;
     }
 }
