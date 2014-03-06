@@ -43,7 +43,7 @@ angular.module('champagneRocksApp')
 		scene.add( ground );
 
 	    renderer = new THREE.CanvasRenderer();
-	    renderer.setClearColor( 0x666666 );
+	    renderer.setClearColor( 0xaaaaaa );
 	    renderer.setSize(window.innerWidth, window.innerHeight);
 
 	    document.body.appendChild(renderer.domElement);
@@ -67,6 +67,9 @@ angular.module('champagneRocksApp')
 	    // // line
 
 	    var geometry = shape.createPointsGeometry();
+	    console.log(color);
+	    color.setHSL( 0.6, 1.0, Math.max( 0, ( 200 - points[ i ].x ) / 400 ) * 0.5 + 0.5 );
+	    console.log(color);
 	    var material = new THREE.LineBasicMaterial( { linewidth:2, color: color, transparent: true } );
 
 	    var line = new THREE.Line( geometry, material );
@@ -85,7 +88,7 @@ angular.module('champagneRocksApp')
 	var mouseY = 0;
 
 	function animate() {
-	    var timer = 0.005 * Date.now();
+	    var timer = 0.001 * Date.now();
 
 	    //removing objects from the scene, to lighten the load
 	  	if(scene.__objectsAdded.length > 200 ){
@@ -112,13 +115,13 @@ angular.module('champagneRocksApp')
 
 				// Rectangle
 
-		var rectLength = 200, rectWidth = 200;
+		var rectLength = 400, rectWidth = 400;
 
 		var rectShape = new THREE.Shape();
 		rectShape.moveTo( 0,0 );
-		rectShape.lineTo( 0, rectWidth );
-		rectShape.lineTo( rectLength + (Math.cos(timer) * 100), rectWidth + (Math.cos(timer) * 100) );
-		rectShape.lineTo( rectLength, 0 );
+		rectShape.lineTo( 0, rectWidth + (Math.cos(timer) * 100) );
+		rectShape.lineTo( rectLength + (Math.cos(timer*.02) * 100), rectWidth + (Math.cos(timer*.5) * 100) );
+		rectShape.lineTo( rectLength, rectLength - (Math.cos(timer*.2) * 100) );
 		rectShape.lineTo( 0, 0 );
 
 		var color = new THREE.Color( Math.cos(timer), 1, 1 )

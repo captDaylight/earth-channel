@@ -266,16 +266,16 @@ module.exports = function (grunt) {
     },
 
     // The following *-min tasks produce minified files in the dist folder
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/public/images'
-        }]
-      }
-    },
+    // imagemin: {
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: '<%= yeoman.app %>/images/*',
+    //       src: '{,*/}*.{png,jpg,jpeg,gif}',
+    //       dest: '<%= yeoman.dist %>/public/images'
+    //     }]
+    //   }
+    // },
 
     svgmin: {
       dist: {
@@ -340,7 +340,31 @@ module.exports = function (grunt) {
             'images/{,*/}*.{webp}',
             'fonts/**/*'
           ]
-        }, {
+        },{
+          expand: true,
+          dot:true,
+          cwd: '<%= yeoman.app %>/svg',
+          src: '**/*.svg',
+          dest: '<%= yeoman.dist %>/public/svg'
+        },{
+          expand: true,
+          dot:true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '**/*.{jpg,png}',
+          dest: '<%= yeoman.dist %>/public/images'
+        },{
+          expand: true,
+          dot:true,
+          cwd: '<%= yeoman.app %>/fonts',
+          src: '**/*.{eot,svg,ttf,woff}',
+          dest: '<%= yeoman.dist %>/public/fonts'
+        },{
+          expand: true,
+          dot:true,
+          cwd: '<%= yeoman.app %>/sounds',
+          src: '**/*.{mp3,ogg}',
+          dest: '<%= yeoman.dist %>/public/sounds'
+        },{
           expand: true,
           dot:true,
           cwd: '<%= yeoman.app %>/objects',
@@ -394,7 +418,7 @@ module.exports = function (grunt) {
       },
       dist: [
         'compass:dist',
-        'imagemin',
+        // 'imagemin',
         'svgmin',
         'htmlmin'
       ]

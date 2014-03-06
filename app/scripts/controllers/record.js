@@ -217,7 +217,7 @@ var clock = new THREE.Clock();
 	    scene = new THREE.Scene();
 	    sceneCube = new THREE.Scene();
 	    projector = new THREE.Projector();
-
+			    
 	    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
 
 	    hemiLight.color.setHSL( 0.6, 1, 0.6 );
@@ -290,6 +290,11 @@ var clock = new THREE.Clock();
 	    sceneCube.add( mesh );
 
 		////////////////////
+
+
+
+
+
 
 
 
