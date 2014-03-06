@@ -10,7 +10,7 @@ angular.module('champagneRocksApp')
   	$scope.title = 'Space Time'
   	$scope.previous = '/cover';
   	$scope.next = '/travel'
-
+var clock = new THREE.Clock();
 
 	var container;
 	buzz.defaults.preload = 'auto';
@@ -20,7 +20,7 @@ angular.module('champagneRocksApp')
 	var mesh, lightMesh, geometry, phone;
 	var spheres = [];
 	    var loader = new THREE.JSONLoader(); // init the loader util
-
+	var uniforms1;
 
 	var directionalLight, pointLight;
 
@@ -61,9 +61,9 @@ angular.module('champagneRocksApp')
 		new buzz.sound( '/sounds/05_envision.mp3'),
 		new buzz.sound( '/sounds/06_divine_ecstasy.mp3')
 	];
-	var materials = [
+	// var materials = [
 
-	]
+	// ]
 
 	// kickstart the application
 	init();
@@ -91,10 +91,7 @@ angular.module('champagneRocksApp')
 	        
 
 	        // FOR TESTING NEW MATERIALS
-
-	        material = materials[10];
-
-
+	        // material = materials[10];
 
 	        // create a mesh with models geometry and material
 	        var mesh = new THREE.Mesh(
@@ -152,29 +149,44 @@ angular.module('champagneRocksApp')
 
 	function init() {
 
+		uniforms1 = {
+			time: { type: "f", value: 1.0 },
+			resolution: { type: "v2", value: new THREE.Vector2() }
+		};
 
 
+
+
+		var params = [ [ 'fragment_shader1', uniforms1 ], [ 'fragment_shader3', uniforms1 ], [ 'fragment_shader4', uniforms1 ] ];
+
+		var material5 = new THREE.ShaderMaterial( {
+
+						uniforms: params[ 2 ][ 1 ],
+						vertexShader: document.getElementById( 'vertexShader' ).textContent,
+						fragmentShader: document.getElementById( params[ 2 ][ 0 ] ).textContent
+
+						} );
 		var texture = new THREE.Texture( generateTexture() );
 		texture.needsUpdate = true;
 
-		materials.push( new THREE.MeshLambertMaterial( { map: texture, transparent: true } ) );
-		materials.push( new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.FlatShading } ) );
-		materials.push( new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } ) );
-		materials.push( new THREE.MeshNormalMaterial( ) );
-		materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending } ) );
-		// materials.push( new THREE.MeshBasicMaterial( { color: 0xff0000, blending: THREE.SubtractiveBlending } ) );
+		// materials.push( new THREE.MeshLambertMaterial( { map: texture, transparent: true } ) );
+		// materials.push( new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.FlatShading } ) );
+		// materials.push( new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } ) );
+		// materials.push( new THREE.MeshNormalMaterial( ) );
+		// materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending } ) );
+		// // materials.push( new THREE.MeshBasicMaterial( { color: 0xff0000, blending: THREE.SubtractiveBlending } ) );
 
-		materials.push( new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.SmoothShading } ) );
-		materials.push( new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.SmoothShading, map: texture, transparent: true } ) );
-		materials.push( new THREE.MeshNormalMaterial( { shading: THREE.SmoothShading } ) );
-		materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } ) );
+		// materials.push( new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.SmoothShading } ) );
+		// materials.push( new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.SmoothShading, map: texture, transparent: true } ) );
+		// materials.push( new THREE.MeshNormalMaterial( { shading: THREE.SmoothShading } ) );
+		// materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } ) );
 
-		materials.push( new THREE.MeshDepthMaterial() );
+		// materials.push( new THREE.MeshDepthMaterial() );
 
-		materials.push( new THREE.MeshLambertMaterial( { color: 0x666666, emissive: 0xff0000, ambient: 0x000000, shading: THREE.SmoothShading } ) );
-		materials.push( new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x666666, emissive: 0xff0000, ambient: 0x000000, shininess: 10, shading: THREE.SmoothShading, opacity: 0.9, transparent: true } ) );
+		// materials.push( new THREE.MeshLambertMaterial( { color: 0x666666, emissive: 0xff0000, ambient: 0x000000, shading: THREE.SmoothShading } ) );
+		// materials.push( new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x666666, emissive: 0xff0000, ambient: 0x000000, shininess: 10, shading: THREE.SmoothShading, opacity: 0.9, transparent: true } ) );
 
-		materials.push( new THREE.MeshBasicMaterial( { map: texture, transparent: true } ) );
+		// materials.push( new THREE.MeshBasicMaterial( { map: texture, transparent: true } ) );
 
 
 
@@ -213,6 +225,8 @@ angular.module('champagneRocksApp')
 	    hemiLight.position.set( 0, 500, 0 );
 	    scene.add( hemiLight );
 
+	    
+
 	    ////////////////////
 
 
@@ -223,8 +237,10 @@ angular.module('champagneRocksApp')
 	    for(var i = 0; i < skyboxDirectories.length; i++){
 			var urls = getSkyboxImageArray(skyboxDirectories[i]);
 	    	var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping() );
-	    	var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
-	    	skyMaterials.push({material: material, textureCube: textureCube});
+	    	// var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
+	    	var material = new THREE.MeshBasicMaterial( { color: 0xaaaaff, envMap: textureCube } );
+	    	var material = new THREE.MeshLambertMaterial( { color: 0xffffff, emissive: 0x0000ff, shading: THREE.FlatShading } );
+	    	skyMaterials.push({material: material5, textureCube: textureCube});
 	    }
 
 	    ////////////////////
@@ -350,9 +366,9 @@ angular.module('champagneRocksApp')
 	function render() {
 	    var timer = 0.001 * Date.now();
 
-	    materials[ 10 ].emissive.setHSL( 0.54, 1, 0.35 * ( 0.5 + 0.5 * Math.sin( 35 * timer ) ) )
-
-
+	    // materials[ 10 ].emissive.setHSL( 0.54, 1, 0.35 * ( 0.5 + 0.5 * Math.sin( 35 * timer ) ) )
+	    var delta = clock.getDelta();
+	    uniforms1.time.value += delta * 5;
 
 
 	    if(phone !== undefined){
@@ -366,7 +382,8 @@ angular.module('champagneRocksApp')
 	    		spheres[i].scale.y = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
 	    		spheres[i].scale.z = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
 	    	}
-
+	    	spheres[i].rotation.x += .01;
+	    	spheres[i].rotation.y += .01;
 	    }
 
 	    camera.position.x += ( mouseX - camera.position.x ) * .05;
