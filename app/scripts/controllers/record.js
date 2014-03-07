@@ -100,7 +100,7 @@ var clock = new THREE.Clock();
 	            material
 	        );
 
-	        mesh.scale.x = mesh.scale.y = mesh.scale.z = 5;
+	        mesh.scale.x = mesh.scale.y = mesh.scale.z = 10;
 
 			mesh.position.x = x;
 			mesh.position.y = y;
@@ -211,7 +211,7 @@ var clock = new THREE.Clock();
 	    document.body.appendChild( container );
 
 	    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
-	    camera.position.z = -10000;
+	    camera.position.z = -19000;
 
 	    cameraCube = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
 
@@ -263,7 +263,7 @@ var clock = new THREE.Clock();
 	    
 		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], 1000, 1000, 1000);
 		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], 2000, 5000, 5000);
-		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -2000, -2000, -2000);
+		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -4000, -2000, -2000);
 		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 5000, 5000, 6000);
 		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[3], skyMaterials[5], 7000, 5000, 7000);
 		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[3], skyMaterials[6], 5000, 8000, 5000);
@@ -330,7 +330,7 @@ var clock = new THREE.Clock();
 	            material
 	        );
 	        phone = mesh;
-	        phone.scale.x = phone.scale.y = phone.scale.z = 25;
+	        phone.scale.x = phone.scale.y = phone.scale.z = 35;
 
 	        scene.add(phone);
 	    });
@@ -351,8 +351,8 @@ var clock = new THREE.Clock();
 
 	function onDocumentMouseMove(event) {
 
-	    mouseX = ( event.clientX - windowHalfX ) * 10;
-	    mouseY = -( event.clientY - windowHalfY ) * 10;
+	    mouseX = ( event.clientX - windowHalfX ) * 15;
+	    mouseY = -( event.clientY - windowHalfY ) * 15;
 
 	}
 
@@ -378,11 +378,11 @@ var clock = new THREE.Clock();
 
 
 	    if(phone !== undefined){
-		    phone.position.y = -4000
+		    phone.position.y = -7000
 		    phone.position.x = -1000
 		    phone.position.z = 15000
 		    phone.rotation.y += .005
-		    phone.rotation.x += .0015;
+		    phone.rotation.x += .000;
 	    }
 	    for(var i = 0; i < spheres.length; i++){
 	    	if(spheres[i].active){
@@ -394,8 +394,8 @@ var clock = new THREE.Clock();
 	    	spheres[i].rotation.y += .01;
 	    }
 
-	    camera.position.x += ( mouseX - camera.position.x ) * .05;
-	    camera.position.y += ( - mouseY - camera.position.y ) * .05;
+	    camera.position.x += ( mouseX - camera.position.x ) * .1;
+	    camera.position.y += ( - mouseY - camera.position.y ) * .1;
 
 	    camera.lookAt( scene.position );
 	    cameraCube.rotation.copy( camera.rotation );
