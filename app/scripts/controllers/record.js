@@ -36,9 +36,10 @@ var clock = new THREE.Clock();
 	var skyboxDirectories = [
 		'Cube',
 		'GeoCave',
-		'MapProof',
+		'MarbleDrift',
 		'Sander',
-		'night_sky'
+		'night_sky',
+		'BuddleBrane'
 	];
 	var sphereObjects = [
 		'Rec_S01_0304_01.js',
@@ -210,7 +211,7 @@ var clock = new THREE.Clock();
 	    document.body.appendChild( container );
 
 	    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
-	    camera.position.z = -5000;
+	    camera.position.z = -10000;
 
 	    cameraCube = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
 
@@ -218,12 +219,12 @@ var clock = new THREE.Clock();
 	    sceneCube = new THREE.Scene();
 	    projector = new THREE.Projector();
 			    
-	    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+	    var hemiLight1 = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
 
-	    hemiLight.color.setHSL( 0.6, 1, 0.6 );
-	    hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
-	    hemiLight.position.set( 0, 500, 0 );
-	    scene.add( hemiLight );
+	    hemiLight1.color.setHSL( 0.6, 1, 0.6 );
+	    hemiLight1.groundColor.setHSL( .01, 0, 0.2 );
+	    hemiLight1.position.set( 0, 500, 0 );
+	    scene.add( hemiLight1 );
 
 	    
 
@@ -264,8 +265,8 @@ var clock = new THREE.Clock();
 		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], 2000, 5000, 5000);
 		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -2000, -2000, -2000);
 		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 5000, 5000, 6000);
-		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[3], skyMaterials[4], 7000, 5000, 7000);
-		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[3], skyMaterials[4], 5000, 8000, 5000);
+		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[3], skyMaterials[5], 7000, 5000, 7000);
+		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[3], skyMaterials[6], 5000, 8000, 5000);
 
 	    ////////////////////
 
@@ -316,12 +317,12 @@ var clock = new THREE.Clock();
 	    var loader = new THREE.JSONLoader(); // init the loader util
 
 	    // init loading
-	    loader.load('objects/Rec_CO_0304_03.js', function (geometry) {
+	    loader.load('objects/Skull_0307.js', function (geometry) {
 	        // create a new material
 
 	        // this is the same as the other objects
 	        // var material = new THREE.MeshBasicMaterial( { color: 0x666666, envMap: textureCube, refractionRatio: 0.99 } );
-	        var material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
+	        var material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 100, shading: THREE.FlatShading } )
 
 	        // create a mesh with models geometry and material
 	        var mesh = new THREE.Mesh(
@@ -329,7 +330,7 @@ var clock = new THREE.Clock();
 	            material
 	        );
 	        phone = mesh;
-	        phone.scale.x = phone.scale.y = phone.scale.z = 5;
+	        phone.scale.x = phone.scale.y = phone.scale.z = 25;
 
 	        scene.add(phone);
 	    });
@@ -373,13 +374,15 @@ var clock = new THREE.Clock();
 
 	    // materials[ 10 ].emissive.setHSL( 0.54, 1, 0.35 * ( 0.5 + 0.5 * Math.sin( 35 * timer ) ) )
 	    var delta = clock.getDelta();
-	    uniforms1.time.value += delta * 5;
+	    uniforms1.time.value += delta * 50;
 
 
 	    if(phone !== undefined){
-		    phone.position.y = 1000 * Math.cos(timer);
-		    phone.rotation.y += .01;
-		    phone.rotation.x += .01;
+		    phone.position.y = -4000
+		    phone.position.x = -1000
+		    phone.position.z = 15000
+		    phone.rotation.y += .005
+		    phone.rotation.x += .0015;
 	    }
 	    for(var i = 0; i < spheres.length; i++){
 	    	if(spheres[i].active){
