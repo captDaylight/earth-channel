@@ -231,18 +231,18 @@ module.exports = function (grunt) {
     },
 
     // Renames files for browser caching purposes
-    rev: {
-      dist: {
-        files: {
-          src: [
-            '<%= yeoman.dist %>/public/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/public/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/public/styles/fonts/*'
-          ]
-        }
-      }
-    },
+    // rev: {
+    //   dist: {
+    //     files: {
+    //       src: [
+    //         '<%= yeoman.dist %>/public/scripts/{,*/}*.js',
+    //         '<%= yeoman.dist %>/public/styles/{,*/}*.css',
+    //         '<%= yeoman.dist %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+    //         '<%= yeoman.dist %>/public/styles/fonts/*'
+    //       ]
+    //     }
+    //   }
+    // },
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
@@ -558,7 +558,7 @@ module.exports = function (grunt) {
     'cdnify',
     'cssmin',
     'uglify',
-    'rev',
+    // 'rev',
     'usemin'
   ]);
 
