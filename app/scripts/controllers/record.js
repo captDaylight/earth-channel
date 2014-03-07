@@ -100,7 +100,7 @@ var clock = new THREE.Clock();
 	            material
 	        );
 
-	        mesh.scale.x = mesh.scale.y = mesh.scale.z = 10;
+	        mesh.scale.x = mesh.scale.y = mesh.scale.z = 16;
 
 			mesh.position.x = x;
 			mesh.position.y = y;
@@ -210,10 +210,10 @@ var clock = new THREE.Clock();
 	    container = document.createElement( 'div' );
 	    document.body.appendChild( container );
 
-	    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
-	    camera.position.z = -19000;
+	    camera = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 1, 100000 );
+	    camera.position.z = -22000;
 
-	    cameraCube = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
+	    cameraCube = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 1, 100000 );
 
 	    scene = new THREE.Scene();
 	    sceneCube = new THREE.Scene();
@@ -261,12 +261,13 @@ var clock = new THREE.Clock();
 	    // CREATE MUSIC ORBS
 	    ////////////////////
 	    
-		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], 1000, 1000, 1000);
-		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], 2000, 5000, 5000);
-		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -4000, -2000, -2000);
-		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 5000, 5000, 6000);
-		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[3], skyMaterials[5], 7000, 5000, 7000);
-		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[3], skyMaterials[6], 5000, 8000, 5000);
+		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], -10000, -15000, 30000);
+		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], -15000, 10000, 5000);
+		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -12000, -6000, -4000);
+		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 24000, -5000, 15000);
+		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[5], 7000, -9000, -3500);
+		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[6], 5000, 8000, 5000);
+		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[7], -1000, 8000, 5000);
 
 	    ////////////////////
 
@@ -330,7 +331,7 @@ var clock = new THREE.Clock();
 	            material
 	        );
 	        phone = mesh;
-	        phone.scale.x = phone.scale.y = phone.scale.z = 35;
+	        phone.scale.x = phone.scale.y = phone.scale.z = 38;
 
 	        scene.add(phone);
 	    });
@@ -351,8 +352,8 @@ var clock = new THREE.Clock();
 
 	function onDocumentMouseMove(event) {
 
-	    mouseX = ( event.clientX - windowHalfX ) * 15;
-	    mouseY = -( event.clientY - windowHalfY ) * 15;
+	    mouseX = ( event.clientX - windowHalfX ) * 22;
+	    mouseY = -( event.clientY - windowHalfY ) * 22;
 
 	}
 
@@ -380,7 +381,7 @@ var clock = new THREE.Clock();
 	    if(phone !== undefined){
 		    phone.position.y = -7000
 		    phone.position.x = -1000
-		    phone.position.z = 15000
+		    phone.position.z = 10000
 		    phone.rotation.y += .005
 		    phone.rotation.x += .000;
 	    }
