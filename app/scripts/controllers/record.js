@@ -34,12 +34,12 @@ var clock = new THREE.Clock();
 
 	// the first one will be the default, the rest for each object
 	var skyboxDirectories = [
-		'Cube',
-		'GeoCave',
 		'MarbleDrift',
+		'GeoCave',
+		'Cube',
 		'BuddleBrane',
 		'night_sky',
-		'BuddleBrane'
+		'NeoShade'
 	];
 	var sphereObjects = [
 		'Rec_S01_0304_01.js',
@@ -60,8 +60,8 @@ var clock = new THREE.Clock();
 		new buzz.sound( '/sounds/02_cocktails.mp3'),
 		new buzz.sound( '/sounds/03_gone.mp3'),
 		new buzz.sound( '/sounds/05_envision.mp3'),
-		new buzz.sound( '/sounds/06_divine_ecstasy.mp3')
-		new buzz.sound( '/sounds/08_down.mp3')
+		new buzz.sound( '/sounds/06_divine_ecstasy.mp3'),
+		new buzz.sound( '/sounds/08_down.mp3'),
 		new buzz.sound( '/sounds/09_brown_flowers.mp3')
 	];
 	// var materials = [
@@ -264,12 +264,12 @@ var clock = new THREE.Clock();
 	    ////////////////////
 	    
 		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], -10000, -15000, 30000);
-		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], -15000, 10000, 5000);
-		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -10000, -4000, -4500);
+		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], -18000, 10000, 23000);
+		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -12000, -4000, -500);
 		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 24000, -5000, 10000);
-		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[5], 20000, -9000, -3500);
-		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[6], 10000, 15000, 5000);
-		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[7], -1000, 12000, 5000);
+		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[5], 7000, -6000, -4600);
+		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[6], 18000, 12000, 15000);
+		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[7], -6000, 15000, 10000);
 
 	    ////////////////////
 
