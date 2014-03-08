@@ -42,15 +42,15 @@ var clock = new THREE.Clock();
 		'NeoShade'
 	];
 	var sphereObjects = [
-		'Rec_S01_0304_01.js',
-		'Rec_S02_0304_01.js',
-		'Rec_S03_0304_01.js',
-		'Rec_S04_0304_01.js',
-		'Rec_S05_0304_01.js',
-		'Rec_S06_0304_01.js',
-		'Rec_S07_0304_01.js',
-		'Rec_S08_0304_01.js',
-		'Rec_S09_0304_01.js'
+		'Rec_S01_0304_02.js',
+		'Rec_S01_0304_02.js',
+		'Rec_S01_0304_02.js',
+		'Rec_S01_0304_02.js',
+		'Rec_S01_0304_02.js',
+		'Rec_S06_0307_01.js',
+		'Rec_S07_0307_01.js',
+		'Rec_S08_0307_01.js',
+		'Rec_S09_0307_01.js'
 	]
 
 	var skyMaterials = [];
@@ -102,7 +102,7 @@ var clock = new THREE.Clock();
 	            material
 	        );
 
-	        mesh.scale.x = mesh.scale.y = mesh.scale.z = 16;
+	        mesh.scale.x = mesh.scale.y = mesh.scale.z = 22;
 
 			mesh.position.x = x;
 			mesh.position.y = y;
@@ -371,13 +371,13 @@ var clock = new THREE.Clock();
 
 
 
-	var orbFluxAmount = 1;
+	var orbFluxAmount = 0.25;
 	function render() {
 	    var timer = 0.001 * Date.now();
 
 	    // materials[ 10 ].emissive.setHSL( 0.54, 1, 0.35 * ( 0.5 + 0.5 * Math.sin( 35 * timer ) ) )
 	    var delta = clock.getDelta();
-	    uniforms1.time.value += delta * 50;
+	    uniforms1.time.value += delta * 8;
 
 
 	    if(phone !== undefined){
