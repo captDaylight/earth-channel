@@ -290,13 +290,13 @@ angular.module('champagneRocksApp')
 	    // CREATE MUSIC ORBS
 	    ////////////////////
 
-		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], -10000, -15000, 30000, 1);
-		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], -15000, 10000, 5000, 2);
-		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -12000, -6000, -4000, 3);
-		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 24000, -5000, 15000, 4);
-		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[5], 7000, -9000, -3500, 5);
-		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[6], 5000, 8000, 5000, 6);
-		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[7], -1000, 8000, 5000, 7);
+		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[0], -10000, -15000, 30000, 1);
+		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[1], -15000, 10000, 5000, 2);
+		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[2], -12000, -6000, -4000, 3);
+		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[3], 24000, -5000, 15000, 4);
+		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[4], 7000, -9000, -3500, 5);
+		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[5], 5000, 8000, 5000, 6);
+		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[6], -1000, 8000, 5000, 7);
 
 	    ////////////////////
 
