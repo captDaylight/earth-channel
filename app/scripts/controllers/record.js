@@ -10,7 +10,7 @@ angular.module('champagneRocksApp')
   	$scope.title = 'Space Time'
   	$scope.previous = '/cover';
   	$scope.next = '/travel'
-var clock = new THREE.Clock();
+	var clock = new THREE.Clock();
 
 	var container;
 	buzz.defaults.preload = 'auto';
@@ -61,9 +61,7 @@ var clock = new THREE.Clock();
 		new buzz.sound( '/sounds/05_envision.mp3'),
 		new buzz.sound( '/sounds/06_divine_ecstasy.mp3')
 	];
-	// var materials = [
-
-	// ]
+	
 
 	// kickstart the application
 	init();
@@ -83,7 +81,7 @@ var clock = new THREE.Clock();
 	function getRandomInt(min, max) {
 	  return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
-	function createMusicOrb(geometry, material, object, sound, texture, x, y, z){
+	function createMusicOrb(geometry, material, object, sound, texture, x, y, z, id){
 	    loader.load('objects/' + object, function (geometry) {
 	        // create a new material
 	        // var material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
@@ -109,12 +107,33 @@ var clock = new THREE.Clock();
 			mesh.stableScale = mesh.scale.x;
 			mesh.sound = sound;
 			mesh.soundTexture = texture;
+			mesh.orbID = id;
+			mesh.sound.bind('ended', function(e) {
+				mesh.active = false;
+				playOrb(mesh.orbID);
+			});
+
+
 			scene.add( mesh );
 			spheres.push( mesh );
 	    });
 	}
 
-
+	function playOrb(orbID){
+		var obj;
+		console.log('PLAY ORB');
+		console.log(orbID);
+		if(orbID === spheres.length){
+			// play the first song
+			obj = spheres[0]
+		}else{
+			// play the last song
+			obj = spheres[orbID+1]
+		}
+		console.log(obj)
+		obj.sound.play();
+		obj.active = true;
+	}
 	function generateTexture() {
 
 		var canvas = document.createElement( 'canvas' );
@@ -149,6 +168,15 @@ var clock = new THREE.Clock();
 
 	function init() {
 
+		// bind event listeners to end of song
+		for(var i = 0; i < soundsObjs.length; i++){
+			soundsObjs[i].bind('ended', function(e) {
+				
+			});
+		}
+
+
+
 		uniforms1 = {
 			time: { type: "f", value: 1.0 },
 			resolution: { type: "v2", value: new THREE.Vector2() }
@@ -161,11 +189,12 @@ var clock = new THREE.Clock();
 
 		var material5 = new THREE.ShaderMaterial( {
 
-						uniforms: params[ 2 ][ 1 ],
-						vertexShader: document.getElementById( 'vertexShader' ).textContent,
-						fragmentShader: document.getElementById( params[ 2 ][ 0 ] ).textContent
+			uniforms: params[ 2 ][ 1 ],
+			vertexShader: document.getElementById( 'vertexShader' ).textContent,
+			fragmentShader: document.getElementById( params[ 2 ][ 0 ] ).textContent
 
-						} );
+		} );
+
 		var texture = new THREE.Texture( generateTexture() );
 		texture.needsUpdate = true;
 
@@ -260,13 +289,13 @@ var clock = new THREE.Clock();
 	    // CREATE MUSIC ORBS
 	    ////////////////////
 	    
-		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], 1000, 1000, 1000);
-		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], 2000, 5000, 5000);
-		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -2000, -2000, -2000);
-		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 5000, 5000, 6000);
-		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[3], skyMaterials[4], 7000, 5000, 7000);
-		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[3], skyMaterials[4], 5000, 8000, 5000);
-
+		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], 1000, 1000, 1000, 1);
+		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], 2000, 5000, 5000, 2);
+		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -2000, -2000, -2000, 3);
+		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 5000, 5000, 6000, 4);
+		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[3], skyMaterials[4], 7000, 5000, 7000, 5);
+		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[3], skyMaterials[4], 5000, 8000, 5000, 6);
+		
 	    ////////////////////
 
 
