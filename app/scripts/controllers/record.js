@@ -385,7 +385,10 @@ angular.module('champagneRocksApp')
 	    		spheres[i].scale.x = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
 	    		spheres[i].scale.y = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
 	    		spheres[i].scale.z = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
-	    		spheres[i].material.color.r = Math.cos(timer*3)
+
+	    		// ANDREW, CHANGE THE NUMBER AFTER THE TIMER TO SLOD AND SPEED UP
+	    		spheres[i].material.color.r = Math.cos(timer*2);
+	    		spheres[i].material.color.g = Math.cos(timer);
 	    	}
 	    	spheres[i].rotation.x += .01;
 	    	spheres[i].rotation.y += .01;
@@ -400,8 +403,6 @@ angular.module('champagneRocksApp')
 	    renderer.render( sceneCube, cameraCube );
 	    renderer.render( scene, camera );
 	}
-
-
 
 
 	function onDocumentMouseDown( event ) {
