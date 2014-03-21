@@ -99,7 +99,7 @@ angular.module('champagneRocksApp')
 	        // create a mesh with models geometry and material
 			var material = new THREE.MeshLambertMaterial( { color: 0xff6600, ambient: 0x993300, envMap: skyMaterials[0], combine: THREE.MixOperation, reflectivity: 0.3 } );
 	        
-			var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, ambient: 0xffffff, envMap: skyMaterials[3], refractionRatio: 0.95 } );
+			var material = new THREE.MeshLambertMaterial( { color: 0xccaaaa, ambient: 0xffffff, envMap: skyMaterials[3], refractionRatio: 0.95, combine: THREE.Multiply, reflectivity: .75 } );
 	        var mesh = new THREE.Mesh(
 	            geometry,
 	            material
@@ -233,14 +233,14 @@ angular.module('champagneRocksApp')
 
 
 	    // add a circulating light
-	    pointLight = new THREE.PointLight( 0xffffff, 2 );
+	    pointLight = new THREE.PointLight( 0xffffff, 1 );
 		scene.add( pointLight );
 		sphere = new THREE.SphereGeometry( 10000, 16, 8 );
 		lightMesh = new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
 		lightMesh.position = pointLight.position;
 		lightMesh.scale.x = lightMesh.scale.y = lightMesh.scale.z = 0.05;
-		console.log(lightMesh);
-		scene.add( lightMesh );
+		// console.log(lightMesh);
+		// scene.add( lightMesh );  // visualize the light
 	    ////////////////////
 
 
@@ -269,8 +269,8 @@ angular.module('champagneRocksApp')
 	    
 	    ////////////////////
 
-		onMaterial = new THREE.MeshLambertMaterial( { color: 0xff6600, ambient: 0x993300, envMap: skyMaterials[0], combine: THREE.MixOperation, reflectivity: 0.3 } );
-		offMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0x666666, envMap: skyMaterials[3], refractionRatio: 0.95 } );
+		onMaterial = new THREE.MeshLambertMaterial( { color: 0xaa0000, ambient: 0x000000, envMap: skyMaterials[0], combine: THREE.Multiply, reflectivity: 1 } );
+		offMaterial = new THREE.MeshLambertMaterial( { color: 0xccaaaa, ambient: 0xffffff, envMap: skyMaterials[3], refractionRatio: 0.95, combine: THREE.Multiply, reflectivity: .75 } );
 
 	    // CREATE MUSIC ORBS
 	    ////////////////////
@@ -370,8 +370,8 @@ angular.module('champagneRocksApp')
 	    var timer = 0.001 * Date.now();
 	    
 	    // move the light around the scene
-		lightMesh.position.x = 5000 * Math.cos( timer )+5000;
-		lightMesh.position.z = 5000 * Math.sin( timer )+ 5000;
+		lightMesh.position.x = 20000 * Math.cos( timer );
+		lightMesh.position.z = 20000 * Math.sin( timer );
 
 	    if(centralBeacon !== undefined){
 		    centralBeacon.position.y = -7000
@@ -387,8 +387,10 @@ angular.module('champagneRocksApp')
 	    		spheres[i].scale.z = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
 
 	    		// ANDREW, CHANGE THE NUMBER AFTER THE TIMER TO SLOD AND SPEED UP
-	    		spheres[i].material.color.r = Math.cos(timer*2);
-	    		spheres[i].material.color.g = Math.cos(timer);
+	    		var mathTest = Math.cos(timer*3);
+
+	    		spheres[i].material.color.r = (Math.cos(timer*3) + 1)/4 + .5;
+	    		// spheres[i].material.color.g = Math.cos(timer);
 	    	}
 	    	spheres[i].rotation.x += .01;
 	    	spheres[i].rotation.y += .01;
