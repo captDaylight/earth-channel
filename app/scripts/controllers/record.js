@@ -38,23 +38,23 @@ angular.module('champagneRocksApp')
 
 	// the first one will be the default, the rest for each object
 	var skyboxDirectories = [
-		'Cube',
-		'GeoCave',
 		'MarbleDrift',
-		'Sander',
+		'GeoCave',
+		'Cube',
+		'BuddleBrane',
 		'night_sky',
-		'BuddleBrane'
+		'NeoShade'
 	];
 	var sphereObjects = [
-		'Rec_S01_0304_01.js',
-		'Rec_S02_0304_01.js',
-		'Rec_S03_0304_01.js',
-		'Rec_S04_0304_01.js',
-		'Rec_S05_0304_01.js',
-		'Rec_S06_0304_01.js',
-		'Rec_S07_0304_01.js',
-		'Rec_S08_0304_01.js',
-		'Rec_S09_0304_01.js'
+		'Rec_S01_0304_02.js',
+		'Rec_S01_0304_02.js',
+		'Rec_S01_0304_02.js',
+		'Rec_S01_0304_02.js',
+		'Rec_S01_0304_02.js',
+		'Rec_S06_0307_01.js',
+		'Rec_S07_0307_01.js',
+		'Rec_S08_0307_01.js',
+		'Rec_S09_0307_01.js'
 	]
 
 	var skyMaterials = [];
@@ -64,7 +64,9 @@ angular.module('champagneRocksApp')
 		new buzz.sound( '/sounds/02_cocktails.mp3'),
 		new buzz.sound( '/sounds/03_gone.mp3'),
 		new buzz.sound( '/sounds/05_envision.mp3'),
-		new buzz.sound( '/sounds/06_divine_ecstasy.mp3')
+		new buzz.sound( '/sounds/06_divine_ecstasy.mp3'),
+		new buzz.sound( '/sounds/08_down.mp3'),
+		new buzz.sound( '/sounds/09_brown_flowers.mp3')
 	];
 	
 
@@ -105,7 +107,7 @@ angular.module('champagneRocksApp')
 	            material
 	        );
 
-	        mesh.scale.x = mesh.scale.y = mesh.scale.z = 16;
+	        mesh.scale.x = mesh.scale.y = mesh.scale.z = 22;
 
 			mesh.position.x = x;
 			mesh.position.y = y;
@@ -274,6 +276,16 @@ angular.module('champagneRocksApp')
 
 	    // CREATE MUSIC ORBS
 	    ////////////////////
+<<<<<<< HEAD
+	    
+		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], -10000, -15000, 30000);
+		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], -18000, 10000, 23000);
+		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[3], -12000, -4000, -500);
+		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[4], 24000, -5000, 10000);
+		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[5], 7000, -6000, -4600);
+		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[6], 18000, 12000, 15000);
+		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[7], -6000, 15000, 10000);
+=======
 
 		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[0], -10000, -15000, 30000, 1);
 		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[1], -15000, 10000, 5000, 2);
@@ -282,6 +294,7 @@ angular.module('champagneRocksApp')
 		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[4], 7000, -9000, -3500, 5);
 		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[5], 5000, 8000, 5000, 6);
 		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[6], -1000, 8000, 5000, 7);
+>>>>>>> FETCH_HEAD
 
 	    ////////////////////
 
@@ -365,9 +378,23 @@ angular.module('champagneRocksApp')
 
 
 
-	var orbFluxAmount = 1;
+	var orbFluxAmount = 0.25;
 	function render() {
 	    var timer = 0.001 * Date.now();
+<<<<<<< HEAD
+
+	    // materials[ 10 ].emissive.setHSL( 0.54, 1, 0.35 * ( 0.5 + 0.5 * Math.sin( 35 * timer ) ) )
+	    var delta = clock.getDelta();
+	    uniforms1.time.value += delta * 8;
+
+
+	    if(phone !== undefined){
+		    phone.position.y = -7000
+		    phone.position.x = -1000
+		    phone.position.z = 10000
+		    phone.rotation.y += .005
+		    phone.rotation.x += .000;
+=======
 	    
 	    // move the light around the scene
 		lightMesh.position.x = 20000 * Math.cos( timer );
@@ -379,6 +406,7 @@ angular.module('champagneRocksApp')
 		    centralBeacon.position.z = 10000
 		    centralBeacon.rotation.y += .005
 		    centralBeacon.rotation.x += .000;
+>>>>>>> FETCH_HEAD
 	    }
 	    for(var i = 0; i < spheres.length; i++){
 	    	if(spheres[i].active){
