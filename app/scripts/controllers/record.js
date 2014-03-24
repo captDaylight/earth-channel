@@ -10,17 +10,21 @@ angular.module('champagneRocksApp')
   	$scope.title = 'Space Time'
   	$scope.previous = '/cover';
   	$scope.next = '/travel'
-var clock = new THREE.Clock();
+	var clock = new THREE.Clock();
 
 	var container;
 	buzz.defaults.preload = 'auto';
 	var camera, projector, scene, renderer;
 	var cameraCube, sceneCube;
 
-	var mesh, lightMesh, geometry, phone;
+	var mesh, lightMesh, geometry, centralBeacon;
 	var spheres = [];
-	    var loader = new THREE.JSONLoader(); // init the loader util
+	var loader = new THREE.JSONLoader(); // init the loader util
 	var uniforms1;
+	var sphere, lightMesh, pointLight;
+	
+	var onMaterial, offMaterial;
+
 
 	var directionalLight, pointLight;
 
@@ -64,9 +68,7 @@ var clock = new THREE.Clock();
 		new buzz.sound( '/sounds/08_down.mp3'),
 		new buzz.sound( '/sounds/09_brown_flowers.mp3')
 	];
-	// var materials = [
-
-	// ]
+	
 
 	// kickstart the application
 	init();
@@ -86,7 +88,7 @@ var clock = new THREE.Clock();
 	function getRandomInt(min, max) {
 	  return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
-	function createMusicOrb(geometry, material, object, sound, texture, x, y, z){
+	function createMusicOrb(geometry, material, object, sound, texture, x, y, z, id){
 	    loader.load('objects/' + object, function (geometry) {
 	        // create a new material
 	        // var material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
@@ -97,6 +99,9 @@ var clock = new THREE.Clock();
 	        // material = materials[10];
 
 	        // create a mesh with models geometry and material
+			var material = new THREE.MeshLambertMaterial( { color: 0xff6600, ambient: 0x993300, envMap: skyMaterials[0], combine: THREE.MixOperation, reflectivity: 0.3 } );
+	        
+			var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, ambient: 0xffffff, envMap: skyMaterials[3], refractionRatio: 0.95 } );
 	        var mesh = new THREE.Mesh(
 	            geometry,
 	            material
@@ -112,12 +117,33 @@ var clock = new THREE.Clock();
 			mesh.stableScale = mesh.scale.x;
 			mesh.sound = sound;
 			mesh.soundTexture = texture;
+			mesh.orbID = id;
+			mesh.sound.bind('ended', function(e) {
+				mesh.active = false;
+				playOrb(mesh.orbID);
+			});
+
+
 			scene.add( mesh );
 			spheres.push( mesh );
 	    });
 	}
 
-
+	function playOrb(orbID){
+		var obj;
+		console.log('PLAY ORB');
+		console.log(orbID);
+		if(orbID === spheres.length){
+			// play the first song
+			obj = spheres[0]
+		}else{
+			// play the last song
+			obj = spheres[orbID+1]
+		}
+		console.log(obj)
+		obj.sound.play();
+		obj.active = true;
+	}
 	function generateTexture() {
 
 		var canvas = document.createElement( 'canvas' );
@@ -152,6 +178,15 @@ var clock = new THREE.Clock();
 
 	function init() {
 
+		// bind event listeners to end of song
+		for(var i = 0; i < soundsObjs.length; i++){
+			soundsObjs[i].bind('ended', function(e) {
+				
+			});
+		}
+
+
+
 		uniforms1 = {
 			time: { type: "f", value: 1.0 },
 			resolution: { type: "v2", value: new THREE.Vector2() }
@@ -164,44 +199,14 @@ var clock = new THREE.Clock();
 
 		var material5 = new THREE.ShaderMaterial( {
 
-						uniforms: params[ 2 ][ 1 ],
-						vertexShader: document.getElementById( 'vertexShader' ).textContent,
-						fragmentShader: document.getElementById( params[ 2 ][ 0 ] ).textContent
+			uniforms: params[ 2 ][ 1 ],
+			vertexShader: document.getElementById( 'vertexShader' ).textContent,
+			fragmentShader: document.getElementById( params[ 2 ][ 0 ] ).textContent
 
-						} );
+		} );
+
 		var texture = new THREE.Texture( generateTexture() );
 		texture.needsUpdate = true;
-
-		// materials.push( new THREE.MeshLambertMaterial( { map: texture, transparent: true } ) );
-		// materials.push( new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.FlatShading } ) );
-		// materials.push( new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } ) );
-		// materials.push( new THREE.MeshNormalMaterial( ) );
-		// materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending } ) );
-		// // materials.push( new THREE.MeshBasicMaterial( { color: 0xff0000, blending: THREE.SubtractiveBlending } ) );
-
-		// materials.push( new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.SmoothShading } ) );
-		// materials.push( new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.SmoothShading, map: texture, transparent: true } ) );
-		// materials.push( new THREE.MeshNormalMaterial( { shading: THREE.SmoothShading } ) );
-		// materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } ) );
-
-		// materials.push( new THREE.MeshDepthMaterial() );
-
-		// materials.push( new THREE.MeshLambertMaterial( { color: 0x666666, emissive: 0xff0000, ambient: 0x000000, shading: THREE.SmoothShading } ) );
-		// materials.push( new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x666666, emissive: 0xff0000, ambient: 0x000000, shininess: 10, shading: THREE.SmoothShading, opacity: 0.9, transparent: true } ) );
-
-		// materials.push( new THREE.MeshBasicMaterial( { map: texture, transparent: true } ) );
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -228,8 +233,16 @@ var clock = new THREE.Clock();
 	    hemiLight1.position.set( 0, 500, 0 );
 	    scene.add( hemiLight1 );
 
-	    
 
+	    // add a circulating light
+	    pointLight = new THREE.PointLight( 0xffffff, 2 );
+		scene.add( pointLight );
+		sphere = new THREE.SphereGeometry( 10000, 16, 8 );
+		lightMesh = new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+		lightMesh.position = pointLight.position;
+		lightMesh.scale.x = lightMesh.scale.y = lightMesh.scale.z = 0.05;
+		console.log(lightMesh);
+		scene.add( lightMesh );
 	    ////////////////////
 
 
@@ -240,10 +253,10 @@ var clock = new THREE.Clock();
 	    for(var i = 0; i < skyboxDirectories.length; i++){
 			var urls = getSkyboxImageArray(skyboxDirectories[i]);
 	    	var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping() );
-	    	// var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
-	    	var material = new THREE.MeshBasicMaterial( { color: 0xaaaaff, envMap: textureCube } );
-	    	var material = new THREE.MeshLambertMaterial( { color: 0xffffff, emissive: 0x0000ff, shading: THREE.FlatShading } );
-	    	skyMaterials.push({material: material5, textureCube: textureCube});
+	    	var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
+	    	// var material = new THREE.MeshBasicMaterial( { color: 0xaaaaff, envMap: textureCube } );
+	    	// var material = new THREE.MeshLambertMaterial( { color: 0xffffff, emissive: 0x0000ff, shading: THREE.FlatShading } );
+	    	skyMaterials.push({material: material, textureCube: textureCube});
 	    }
 
 	    ////////////////////
@@ -258,10 +271,12 @@ var clock = new THREE.Clock();
 	    
 	    ////////////////////
 
-
+		onMaterial = new THREE.MeshLambertMaterial( { color: 0xff6600, ambient: 0x993300, envMap: skyMaterials[0], combine: THREE.MixOperation, reflectivity: 0.3 } );
+		offMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0x666666, envMap: skyMaterials[3], refractionRatio: 0.95 } );
 
 	    // CREATE MUSIC ORBS
 	    ////////////////////
+<<<<<<< HEAD
 	    
 		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[1], -10000, -15000, 30000);
 		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[2], -18000, 10000, 23000);
@@ -270,6 +285,16 @@ var clock = new THREE.Clock();
 		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[5], 7000, -6000, -4600);
 		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[6], 18000, 12000, 15000);
 		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[7], -6000, 15000, 10000);
+=======
+
+		createMusicOrb(geometry, material, sphereObjects[0], soundsObjs[0], skyMaterials[0], -10000, -15000, 30000, 1);
+		createMusicOrb(geometry, material, sphereObjects[1], soundsObjs[1], skyMaterials[1], -15000, 10000, 5000, 2);
+		createMusicOrb(geometry, material, sphereObjects[2], soundsObjs[2], skyMaterials[2], -12000, -6000, -4000, 3);
+		createMusicOrb(geometry, material, sphereObjects[3], soundsObjs[3], skyMaterials[3], 24000, -5000, 15000, 4);
+		createMusicOrb(geometry, material, sphereObjects[4], soundsObjs[4], skyMaterials[4], 7000, -9000, -3500, 5);
+		createMusicOrb(geometry, material, sphereObjects[5], soundsObjs[5], skyMaterials[5], 5000, 8000, 5000, 6);
+		createMusicOrb(geometry, material, sphereObjects[6], soundsObjs[6], skyMaterials[6], -1000, 8000, 5000, 7);
+>>>>>>> FETCH_HEAD
 
 	    ////////////////////
 
@@ -305,7 +330,7 @@ var clock = new THREE.Clock();
 		// CREATE RENDERER
 		////////////////////
 
-	    renderer = new THREE.WebGLRenderer();
+	    renderer = new THREE.WebGLRenderer({ antialiasing: false });
 	    renderer.setSize( window.innerWidth, window.innerHeight );
 	    renderer.autoClear = false;
 	    container.appendChild( renderer.domElement );
@@ -324,56 +349,39 @@ var clock = new THREE.Clock();
 	        // create a new material
 
 	        // this is the same as the other objects
-	        // var material = new THREE.MeshBasicMaterial( { color: 0x666666, envMap: textureCube, refractionRatio: 0.99 } );
+	        var material = new THREE.MeshBasicMaterial( { color: 0x666666, envMap: skyMaterials[0], refractionRatio: 0.99 } );
 	        var material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 100, shading: THREE.FlatShading } )
-
+			var material = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xaaaaaa, envMap: skyMaterials[0] } )
+			var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, ambient: 0xffffff, envMap: skyMaterials[3], refractionRatio: 0.95 } );
+			//var material = new THREE.MeshLambertMaterial( { color: 0xff6600, ambient: 0x993300, envMap: skyMaterials[0], combine: THREE.MixOperation, reflectivity: 0.3 } );
+	        var material = offMaterial;
 	        // create a mesh with models geometry and material
 	        var mesh = new THREE.Mesh(
 	            geometry,
 	            material
 	        );
-	        phone = mesh;
-	        phone.scale.x = phone.scale.y = phone.scale.z = 38;
 
-	        scene.add(phone);
+	        centralBeacon = mesh;
+	        centralBeacon.scale.x = centralBeacon.scale.y = centralBeacon.scale.z = 38;
+
+	        scene.add(centralBeacon);
 	    });
 
-	    // ////////////////////
-	   	// for(var i = 0; i < materials.length;i++){
-	   	// 	console.log(i);
-	    // 	console.log(materials[i]);
-	    // }
 
 
 	    // on window resize
 		window.addEventListener( 'resize', onWindowResize, false );
-
-
-	}
-
-
-	function onDocumentMouseMove(event) {
-
-	    mouseX = ( event.clientX - windowHalfX ) * 22;
-	    mouseY = -( event.clientY - windowHalfY ) * 22;
+		
 
 	}
 
-	
-
-	function animate() {
-
-	    requestAnimationFrame( animate );
-
-	    render();
-
-	}
 
 
 
 	var orbFluxAmount = 0.25;
 	function render() {
 	    var timer = 0.001 * Date.now();
+<<<<<<< HEAD
 
 	    // materials[ 10 ].emissive.setHSL( 0.54, 1, 0.35 * ( 0.5 + 0.5 * Math.sin( 35 * timer ) ) )
 	    var delta = clock.getDelta();
@@ -386,12 +394,29 @@ var clock = new THREE.Clock();
 		    phone.position.z = 10000
 		    phone.rotation.y += .005
 		    phone.rotation.x += .000;
+=======
+	    
+	    // move the light around the scene
+		lightMesh.position.x = 5000 * Math.cos( timer )+5000;
+		lightMesh.position.z = 5000 * Math.sin( timer )+ 5000;
+
+	    if(centralBeacon !== undefined){
+		    centralBeacon.position.y = -7000
+		    centralBeacon.position.x = -1000
+		    centralBeacon.position.z = 10000
+		    centralBeacon.rotation.y += .005
+		    centralBeacon.rotation.x += .000;
+>>>>>>> FETCH_HEAD
 	    }
 	    for(var i = 0; i < spheres.length; i++){
 	    	if(spheres[i].active){
 	    		spheres[i].scale.x = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
 	    		spheres[i].scale.y = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
 	    		spheres[i].scale.z = spheres[i].stableScale + (Math.cos(timer*3) / orbFluxAmount);
+
+	    		// ANDREW, CHANGE THE NUMBER AFTER THE TIMER TO SLOD AND SPEED UP
+	    		spheres[i].material.color.r = Math.cos(timer*2);
+	    		spheres[i].material.color.g = Math.cos(timer);
 	    	}
 	    	spheres[i].rotation.x += .01;
 	    	spheres[i].rotation.y += .01;
@@ -406,8 +431,6 @@ var clock = new THREE.Clock();
 	    renderer.render( sceneCube, cameraCube );
 	    renderer.render( scene, camera );
 	}
-
-
 
 
 	function onDocumentMouseDown( event ) {
@@ -451,7 +474,7 @@ var clock = new THREE.Clock();
 			var material = obj.soundTexture['material'];
 
 			for(var i = 0; i < spheres.length; i++){
-				spheres[i].material = material;
+				spheres[i].material = offMaterial;
 			}
 
 		    var shader = THREE.ShaderLib.cube;
@@ -469,10 +492,10 @@ var clock = new THREE.Clock();
 
 		    sceneCube.add( mesh );
 
-
-		    obj.material = obj.soundTexture['material'];
+			obj.material = onMaterial;
 		}
 	}
+
 	function onWindowResize() {
 
 		camera.aspect = window.innerWidth / window.innerHeight;
@@ -482,5 +505,18 @@ var clock = new THREE.Clock();
 
 	}
 
+	function onDocumentMouseMove(event) {
+
+	    mouseX = ( event.clientX - windowHalfX ) * 22;
+	    mouseY = -( event.clientY - windowHalfY ) * 22;
+
+	}
+
+	function animate() {
+
+	    requestAnimationFrame( animate );
+	    render();
+
+	}
 
   });
