@@ -13,7 +13,7 @@ angular.module('champagneRocksApp')
 	var clock = new THREE.Clock();
 
 	var container;
-	buzz.defaults.preload = 'auto';
+	buzz.defaults.preload = false;
 	var camera, projector, scene, renderer;
 	var cameraCube, sceneCube;
 
@@ -79,7 +79,6 @@ angular.module('champagneRocksApp')
 		new buzz.sound( '/sounds/07_DeadMachines.mp3'),
 		new buzz.sound( '/sounds/12_Sleep.mp3'),
 		new buzz.sound( '/sounds/02_Dancing.mp3')
-
 	];
 	
 
