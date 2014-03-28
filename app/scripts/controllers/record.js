@@ -13,7 +13,7 @@ angular.module('champagneRocksApp')
 	var clock = new THREE.Clock();
 
 	var container;
-	buzz.defaults.preload = false;
+	buzz.defaults.preload = 'none';
 	var camera, projector, scene, renderer;
 	var cameraCube, sceneCube;
 
@@ -207,15 +207,8 @@ angular.module('champagneRocksApp')
 
 
 
-		var params = [ [ 'fragment_shader1', uniforms1 ], [ 'fragment_shader3', uniforms1 ], [ 'fragment_shader4', uniforms1 ] ];
 
-		var material5 = new THREE.ShaderMaterial( {
 
-			uniforms: params[ 2 ][ 1 ],
-			vertexShader: document.getElementById( 'vertexShader' ).textContent,
-			fragmentShader: document.getElementById( params[ 2 ][ 0 ] ).textContent
-
-		} );
 
 		var texture = new THREE.Texture( generateTexture() );
 		texture.needsUpdate = true;
