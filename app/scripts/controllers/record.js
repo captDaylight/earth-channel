@@ -256,10 +256,16 @@ angular.module('champagneRocksApp')
 
 	    // START UP ALL OF THE SKY MATERIALS
 	    ////////////////////
-
+	    var count = 0;
 	    for(var i = 0; i < skyboxDirectories.length; i++){
 			var urls = getSkyboxImageArray(skyboxDirectories[i]);
-	    	var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping() );
+	    	var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping(), function(){
+	    		count++;
+
+	    		if ( skyboxDirectories.length === count ) {
+	    			buzz.defaults.preload = 'auto';
+	    		}
+	    	} );
 	    	var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee, envMap: textureCube, refractionRatio: 0.99 } );
 	    	// var material = new THREE.MeshBasicMaterial( { color: 0xaaaaff, envMap: textureCube } );
 	    	// var material = new THREE.MeshLambertMaterial( { color: 0xffffff, emissive: 0x0000ff, shading: THREE.FlatShading } );
