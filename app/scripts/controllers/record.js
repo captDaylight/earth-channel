@@ -14,7 +14,7 @@ angular.module('champagneRocksApp')
 
 	var container;
 	buzz.defaults.preload = 'none';
-	var camera, projector, scene, renderer;
+	var camera, projector, scene, renderer, mouse;
 	var cameraCube, sceneCube;
 
 	var mesh, lightMesh, geometry, centralBeacon;
@@ -189,6 +189,8 @@ angular.module('champagneRocksApp')
 
 
 	function init() {
+
+		mouse = new THREE.Vector2();
 
 		// bind event listeners to end of song
 		for(var i = 0; i < soundsObjs.length; i++){
@@ -403,9 +405,16 @@ angular.module('champagneRocksApp')
 	    		spheres[i].material.color.r = (Math.cos(timer*3) + 1)/4 + .5;
 	    		// spheres[i].material.color.g = Math.cos(timer);
 	    	}
+	    	if (spheres[i].hover && !spheres[i].active) {
+	    		spheres[i].scale.x = spheres[i].stableScale + (Math.cos(timer*6) / orbFluxAmount*2);
+	    		spheres[i].scale.y = spheres[i].stableScale + (Math.cos(timer*6) / orbFluxAmount*2);
+	    		spheres[i].scale.z = spheres[i].stableScale + (Math.cos(timer*6) / orbFluxAmount*2);
+	    	}
+
 	    	spheres[i].rotation.x += .01;
 	    	spheres[i].rotation.y += .01;
 	    }
+
 
 	    camera.position.x += ( mouseX - camera.position.x ) * .1;
 	    camera.position.y += ( - mouseY - camera.position.y ) * .1;
@@ -491,6 +500,30 @@ angular.module('champagneRocksApp')
 	}
 
 	function onDocumentMouseMove(event) {
+
+		event.preventDefault();
+
+		var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+		projector.unprojectVector( vector, camera );
+
+		var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+		var intersects = raycaster.intersectObjects( spheres );
+
+		if ( intersects.length > 0 ) {
+			console.log('here');
+			// intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+			var obj = intersects[ 0 ].object
+
+			obj.scale.x = obj.stableScale + 20;
+
+		    for(var i = 0; i < spheres.length; i++){
+		    	if(spheres[i].hover){
+		    		spheres[i].hover = false;
+		    	}
+		    }
+		    obj.hover = true;
+		}
 
 	    mouseX = ( event.clientX - windowHalfX ) * 22;
 	    mouseY = -( event.clientY - windowHalfY ) * 22;
