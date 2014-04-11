@@ -39,11 +39,11 @@ angular.module('champagneRocksApp')
 	// the first one will be the default, the rest for each object
 	var skyboxDirectories = [
 		'NeoShade',
-		'GlobeW',
 		'DeathStar',
+		'MetaCave',
 		'Vulcan',
 		'Starz',
-		'Xiix',
+		'LineVort',
 		'Cube',
 		'LineCave',
 		'MindHelix'
